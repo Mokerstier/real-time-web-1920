@@ -1,0 +1,37 @@
+{
+  "name": "real-time-web",
+  "version": "1.0.0",
+  "description": "Unique real time web app",
+  "main": "app.js",
+  "scripts": {
+    "test": "test",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mokerstier/real-time-web-1920.git"
+  },
+  "keywords": [
+    "real-time",
+    "web",
+    "app",
+    "unique"
+  ],
+  "author": "Wouter van der Heijde",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mokerstier/real-time-web-1920/issues"
+  },
+  "homepage": "https://github.com/Mokerstier/real-time-web-1920#readme",
+  "dependencies": {
+    "ejs": "^3.0.2",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "eslint": "^6.8.0",
+    "nodemon": "^2.0.2"
+  }
+}
