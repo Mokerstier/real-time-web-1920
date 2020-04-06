@@ -6,7 +6,8 @@
   "scripts": {
     "test": "test",
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "fix": "npx eslint --fix ."
   },
   "repository": {
     "type": "git",
@@ -27,10 +28,11 @@
   "dependencies": {
     "ejs": "^3.0.2",
     "express": "^4.17.1",
-    "socket.io": "^2.3.0"
+    "moment": "^2.24.0",
+    "socket.io": "^2.3.0",
+    "dotenv": "^8.2.0"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "nodemon": "^2.0.2"
   }
