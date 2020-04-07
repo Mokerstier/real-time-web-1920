@@ -1,5 +1,102 @@
+body {
+  background-image: url('../img/background.jpg');
+  background-size: cover;
+  font-family: Arial, Helvetica, sans-serif;
+}
+aside {
+  max-width: 400px;
+  background-color: rgba(255, 255, 255, 0.644);
+}
+aside h3 {
+  margin-left: 2rem;
+}
+aside ul {
+  padding: 0;
+}
+aside li {
+  text-align: right;
+  list-style: none;
+  justify-content: space-between;
+}
+aside li progress {
+  margin-left: 2rem;
+  -webkit-appearance: none;
+}
+aside li progress[value]::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 2px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
+aside li progress[value]::-webkit-progress-value {
+  background-image: -webkit-linear-gradient(-45deg, transparent 33%, rgba(0, 0, 0, 0.1) 33%, rgba(0, 0, 0, 0.1) 66%, transparent 66%), -webkit-linear-gradient(top, rgba(239, 255, 97, 0.38), rgba(0, 0, 0, 0.25)), -webkit-linear-gradient(left, #00b2f1, #01cd82);
+  background-position: 0 0;
+  border-radius: 2px;
+  background-size: 35px 20px, 100% 100%, 100% 100%;
+  transition: all 2s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
 #messages {
-  background-color: aquamarine;
+  border-radius: 4px;
+  max-width: 680px;
+  margin: auto;
+  background-color: rgba(127, 255, 212, 0.658);
+  display: flex;
+  flex-direction: column;
   padding: 1.5rem;
   list-style: none;
+}
+#messages li {
+  margin-top: 0.2rem;
+}
+#messages li p {
+  padding: 0.2rem;
+  border-radius: 4px;
+}
+#messages li span {
+  font-size: 0.7rem;
+  color: #7e7e7e;
+}
+.server-message {
+  border-radius: 4px;
+  padding: 0.2rem;
+  background-color: #ffffff;
+  color: #1100ff;
+  text-align: center;
+}
+.me {
+  align-self: flex-end;
+  background-color: #fff;
+  position: relative;
+  text-align: right;
+  border-bottom-left-radius: 0;
+}
+.other {
+  align-self: flex-start;
+  background-color: #fff;
+  color: #057979;
+  border-bottom-right-radius: 0;
+}
+form {
+  max-width: 680px;
+  margin: auto;
+}
+.message-box {
+  position: fixed;
+  bottom: 20px;
+  max-width: 680px;
+}
+.message-box #m {
+  width: 600px;
+}
+button {
+  margin-left: auto;
+}
+label img {
+  object-fit: cover;
+  width: 90px;
+  height: 90px;
+}
+.thumb {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
 }

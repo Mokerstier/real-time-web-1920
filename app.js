@@ -2,34 +2,99 @@ const express = require('express')
 const app = express()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
+const bodyParser = require('body-parser')
+const urlencodedParser = bodyParser.urlencoded({ extended: true })
 const moment = require('moment')
 moment.locale('nl')
 
 require('dotenv').config()
 
 const PORT = process.env.PORT
-const { routes } = require('./routes/index')
+
+function User(name, hp, mp, warrior)  {
+  this.name = name
+  this.hp = hp
+  this.mp = mp
+  this.warrior = warrior
+}
+
+const randomGreet = [
+  'Sharpen your words for a new challenger appeared: ',
+  'You know who is ready for some epic chat-battle?? ',
+  'Get ready for this next underlord called: ',
+  'You know this challenger?: ',
+  'Get ready to smash your keyboard for: '
+]
+let warrior
+let user 
+let users = []
 
 app
   .set('view engine', 'ejs')
   .set('views', 'views')
   .use(express.static(__dirname + '/static'))
-  .use('/', routes)
+  .use(urlencodedParser)
+  .post('/chat', (req, res) => {
+    user = req.body.fname
+    warrior = req.body.warrior
+    res.render('pages/chat.ejs', {
+      title: 'Keyboard Warrior || Battle',
+      pagemsg: 'This is the beginning of your battle',
+      user: req.query.fname
+    })
+  })
+
+  .get('/', (req, res) =>{
+    res.render('pages/home.ejs', {
+      title: 'Keyboard Warrior',
+      pagemsg: 'Welcome to the socket chat-battle service'
+    })
+  })
+
 	
 
 // app.listen(PORT, () => console.log(`server is gestart op port ${PORT}`))
 
 io.on('connection', function(socket){
-	
-  console.log('a user connected')
+  user = new User(user, 100, 0, warrior)
+  let nickName = user.name
+  const timeStamp = moment().format('LT')
+  // user.hp = 100
+  users.push(user)
+  socket.user = user
+  let randomInt = Math.floor(Math.random() * 6)
+  //connect
+  console.log(`a user with id ${nickName} connected`)
+
+  // Server message
+  socket.emit('server message', `SERVER: welcome to the server ${nickName}.`)
+  socket.broadcast.emit('server message', `SERVER: ${randomGreet[randomInt]} ${nickName}.`)
+  
+  io.emit('update users', users)
+  
+  //disconnect
   socket.on('disconnect', function(){
-    console.log('user disconnected')
+    
+    users = users.filter(User => {if(User.name !== nickName) return User})
+   
+    io.emit('update users', users)
+    // Server message
+    socket.broadcast.emit('server message', `SERVER: user ${nickName} has disconnected.`, timeStamp)
+    console.log(`a user with nick-name ${nickName} disconnected`)
   })
-  socket.on('chat message', function(object) { 
+  socket.on('/target', function(target){
+    let dmg = socket.user.mp
+    users.filter(user => {if(user.name === target) user.hp = user.hp - dmg})
+    socket.user.mp = 0
+    io.emit('update users', users)
+  })
+
+  socket.on('chat message', function(msg, mg) { 
+    socket.user.mp = socket.user.mp + mg
+    warrior = socket.user.warrior
     const timeStamp = moment().format('LT')
-	
-    io.emit('chat message', object, timeStamp)
-    console.log('message: ' + object)
+    socket.emit('chat message','You', msg, timeStamp, 'me', warrior)
+    socket.broadcast.emit('chat message', nickName, msg, timeStamp, 'other', warrior)  
   })
 
 })
