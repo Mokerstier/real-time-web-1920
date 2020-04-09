@@ -68,6 +68,8 @@ io.on('connection', function(socket){
 
   // Server message
   socket.emit('server message', `SERVER: welcome to the server ${nickName}.`)
+  socket.emit('server message', 'With certain commands you can perform actions againts other users')
+  socket.emit('server message', 'Type: "/commands" to get a list of commands')
   socket.broadcast.emit('server message', `SERVER: ${randomGreet[randomInt]} ${nickName}.`)
   
   io.emit('update users', users)
@@ -82,19 +84,40 @@ io.on('connection', function(socket){
     socket.broadcast.emit('server message', `SERVER: user ${nickName} has disconnected.`, timeStamp)
     console.log(`a user with nick-name ${nickName} disconnected`)
   })
-  socket.on('/target', function(target){
-    let dmg = socket.user.mp
-    users.filter(user => {if(user.name === target) user.hp = user.hp - dmg})
-    socket.user.mp = 0
-    io.emit('update users', users)
-  })
+  // socket.on('/target', function(target){
+    
+    
+  // })
 
   socket.on('chat message', function(msg, mg) { 
+    if(msg.includes('/commands')){
+      socket.emit('server message', 'Possible commands are: "/target {target name}" attack a desired target, "/special {target name}" perform a special move on your target, "/heal" can be used to regain some HP ')
+    }
+    else if(msg.includes('/target')){
+      const target = msg.slice(8)
+      let dmg = socket.user.mp
+      users.filter(user => {if(user.name === target) user.hp = user.hp - dmg})
+      socket.user.mp = 0
+      io.emit('update users', users)
+      socket.emit('battle message','SERVER: ','You struck '+target+' with '+dmg+' damage')
+      socket.broadcast.emit('battle message','SERVER: ',socket.user.name+' targeted: '+target+' with a stunning '+dmg+' damage!')
+    } else {
+      warrior = socket.user.warrior
+      const timeStamp = moment().format('LT')
+      socket.emit('chat message','You', msg, timeStamp, 'me', warrior)
+      socket.broadcast.emit('chat message', nickName, msg, timeStamp, 'other', warrior) 
+    }
     socket.user.mp = socket.user.mp + mg
-    warrior = socket.user.warrior
-    const timeStamp = moment().format('LT')
-    socket.emit('chat message','You', msg, timeStamp, 'me', warrior)
-    socket.broadcast.emit('chat message', nickName, msg, timeStamp, 'other', warrior)  
+    if(socket.user.mp >= 50){
+      socket.emit('battle message','You','Special move active! Type: "/special {target}" to 1 shot an enemy')
+    }
+    // console.log(mg)
+    // console.log(socket.user.mp)
+    // console.log(socket.user)
+    
+    
+     
+    
   })
 
 })

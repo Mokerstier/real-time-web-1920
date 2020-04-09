@@ -37,14 +37,17 @@ aside li progress[value]::-webkit-progress-value {
 #messages {
   border-radius: 4px;
   max-width: 680px;
+  height: 75%;
   margin: auto;
   background-color: rgba(127, 255, 212, 0.658);
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
+  padding: 1.5rem 40px;
   list-style: none;
+  overflow-y: scroll;
 }
 #messages li {
+  position: relative;
   margin-top: 0.2rem;
 }
 #messages li p {
@@ -96,7 +99,12 @@ label img {
   height: 90px;
 }
 .thumb {
+  position: absolute;
   border-radius: 50%;
   height: 40px;
   width: 40px;
+  top: 20px;
+}
+.other .thumb {
+  left: -40px;
 }

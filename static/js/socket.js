@@ -7,9 +7,9 @@
     //const userName = document.querySelector('.user-name').innerHTML
     const input = document.querySelector('#m')
     const msg = input.value
-    const target = msg.slice(8)
+    
     socket.emit('chat message', msg, 10)
-    socket.emit('/target', target)
+    // socket.emit('/target', target)
     input.value = ''
     return false
   })
@@ -24,14 +24,24 @@
     userThumb.setAttribute('src', '/img/'+warrior+'.png')
     timeSpan.textContent = timeStamp
     
-    newMessage.classList.add(className)
+    messageContainer.classList.add(className)
     newMessage.textContent = `${id}: ${msg} `
     
     newMessage.appendChild(timeSpan)
     messageContainer.appendChild(userThumb)
     messageContainer.appendChild(newMessage)
     messages.appendChild(messageContainer)
+    newMessage.scrollIntoView()
     
+  })
+
+  socket.on('battle message', function(id, msg ){
+    const messages = document.getElementById('messages')
+    const newMessage = document.createElement('li')
+    newMessage.classList.add('battle-message')
+    newMessage.textContent = `${msg} `
+    messages.appendChild(newMessage)
+    newMessage.scrollIntoView()
   })
 
   socket.on('server message', function(msg){
@@ -40,6 +50,7 @@
     newMessage.classList.add('server-message')
     newMessage.textContent = `${msg} `
     messages.appendChild(newMessage)
+    newMessage.scrollIntoView()
   })
 
   socket.on('update users', function(users){
@@ -59,4 +70,5 @@
     })
     memberList.appendChild(userList)
   })
+  
 })()
