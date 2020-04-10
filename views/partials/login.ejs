@@ -1,7 +1,7 @@
 
 <form action="/chat" method="POST">
     <label for="fname">Enter your first name:</label>
-    <input type="text" name="fname" id="fname">
+    <input required type="text" name="fname" id="fname">
     <h3>Select your fighter</h3>
     <label for="vegeta"><img src="/img/vegeta.png" alt="vegeta"></label>
     <input required type="radio" name="warrior" value="vegeta" id="vegeta">
@@ -9,4 +9,5 @@
     <input required type="radio" name="warrior" value="gohan" id="gohan">
     <label for="goku"><img src="/img/goku.png" alt="goku"></label>
     <input required type="radio" name="warrior" value="goku" id="goku">
+    <button type="submit">Enter battle!</button>
 </form>
