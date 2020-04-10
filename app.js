@@ -84,15 +84,27 @@ io.on('connection', function(socket){
     socket.broadcast.emit('server message', `SERVER: user ${nickName} has disconnected.`, timeStamp)
     console.log(`a user with nick-name ${nickName} disconnected`)
   })
-  // socket.on('/target', function(target){
-    
-    
-  // })
 
   socket.on('chat message', function(msg, mg) { 
     if(msg.includes('/commands')){
       socket.emit('server message', 'Possible commands are: "/target {target name}" attack a desired target, "/special {target name}" perform a special move on your target, "/heal" can be used to regain some HP ')
-    }
+    } 
+    // Special attack
+    else if(msg.includes('/special')){
+      const target = msg.slice(9)
+      users.filter(user => {if(user.name === target) user.hp = 0})
+      io.emit('update users', users)
+      socket.emit('battle message','SERVER: ','You destroyed '+target)
+      socket.broadcast.emit('battle message','SERVER: ',socket.user.name+' destroyed: '+target+' with a special move')
+    } 
+    // Heal
+    else if(msg.includes('/heal')){
+      socket.user.hp = socket.user.hp + socket.user.mp
+      socket.user.mp = 0
+      console.log(socket.user)
+      io.emit('update users', users)
+    } 
+    // Target attack
     else if(msg.includes('/target')){
       const target = msg.slice(8)
       let dmg = socket.user.mp
@@ -106,18 +118,13 @@ io.on('connection', function(socket){
       const timeStamp = moment().format('LT')
       socket.emit('chat message','You', msg, timeStamp, 'me', warrior)
       socket.broadcast.emit('chat message', nickName, msg, timeStamp, 'other', warrior) 
+      socket.user.mp = socket.user.mp + mg
     }
-    socket.user.mp = socket.user.mp + mg
+    
     if(socket.user.mp >= 50){
       socket.emit('battle message','You','Special move active! Type: "/special {target}" to 1 shot an enemy')
     }
-    // console.log(mg)
-    // console.log(socket.user.mp)
-    // console.log(socket.user)
-    
-    
-     
-    
+
   })
 
 })

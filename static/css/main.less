@@ -3,8 +3,11 @@ body {
     background-size: cover;
     font-family: Arial, Helvetica, sans-serif;
 }
+h1{
+  margin-bottom: 1.2rem;
+}
 aside {
-  max-width: 400px;
+  max-width: 100%;
   background-color: rgba(255, 255, 255, 0.644);
   h3{
       margin-left: 2rem;
@@ -17,7 +20,7 @@ aside {
     list-style: none;
     justify-content: space-between;
     progress {
-      margin-left: 2rem;
+      margin: auto;
       -webkit-appearance: none;
     }
     progress[value]::-webkit-progress-bar {
@@ -40,9 +43,9 @@ aside {
 #messages {
   border-radius: 4px;
   max-width: 680px;
-  height: 75%;
+  height: 65%;
   margin: auto;
-  background-color: rgba(127, 255, 212, 0.658);
+  background-color: rgba(255, 255, 255, 0.658);
   display: flex;
   flex-direction: column;
   padding: 1.5rem 40px;
@@ -90,14 +93,21 @@ form {
 }
 .message-box {
   position: fixed;
+  left: 0;
   bottom: 20px;
-  max-width: 680px;
+  padding: 0 8px;
+  width: 100%;
+  display: flex;
   #m {
-    width: 600px;
+    font-size: 1.2rem;
+    color: blue;
+    height: 2rem;
+    width: 90%;
   }
 }
 button {
-  margin-left: auto;
+  color: blue;
+  margin-right: 16px;
 }
 label img {
   object-fit: cover;
