@@ -6,6 +6,7 @@ const bodyParser = require('body-parser')
 const urlencodedParser = bodyParser.urlencoded({ extended: true })
 const moment = require('moment')
 moment.locale('nl')
+moment.tz.setDefault('Europe/Amsterdam')
 
 require('dotenv').config()
 
