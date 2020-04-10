@@ -92,37 +92,59 @@ io.on('connection', function(socket){
     // Special attack
     else if(msg.includes('/special')){
       const target = msg.slice(9)
-      users.filter(user => {if(user.name === target) user.hp = 0})
-      io.emit('update users', users)
-      socket.emit('battle message','SERVER: ','You destroyed '+target)
-      socket.broadcast.emit('battle message','SERVER: ',socket.user.name+' destroyed: '+target+' with a special move')
+      if (socket.user.mp < 50){
+        socket.emit('battle message', null, 'You dont have enough mana to perform this kind of move')
+      } else {
+        users.filter(user => {if(user.name === target) user.hp = 0})
+        io.emit('update users', users)
+        socket.user.mp = 0
+        socket.emit('update mana', socket.user.mp)
+        socket.emit('battle message','SERVER: ','You destroyed '+target)
+        socket.broadcast.emit('battle message','SERVER: ',socket.user.name+' destroyed: '+target+' with a special move')  
+      }
     } 
     // Heal
     else if(msg.includes('/heal')){
-      socket.user.hp = socket.user.hp + socket.user.mp
-      socket.user.mp = 0
-      console.log(socket.user)
-      io.emit('update users', users)
+      if(socket.user.mp == 0){
+        socket.emit('battle message', null, 'You dont have any mp get some by chatting first!')    
+      }else {
+        socket.user.hp = socket.user.hp + socket.user.mp
+        console.log(socket.user)
+        io.emit('update users', users)
+        socket.emit('battle message', null, `You restored ${socket.user.mp} health points!`)
+        
+        socket.user.mp = 0
+        socket.emit('update mana', socket.user.mp)
+      }
     } 
     // Target attack
     else if(msg.includes('/target')){
-      const target = msg.slice(8)
-      let dmg = socket.user.mp
-      users.filter(user => {if(user.name === target) user.hp = user.hp - dmg})
-      socket.user.mp = 0
-      io.emit('update users', users)
-      socket.emit('battle message','SERVER: ','You struck '+target+' with '+dmg+' damage')
-      socket.broadcast.emit('battle message','SERVER: ',socket.user.name+' targeted: '+target+' with a stunning '+dmg+' damage!')
+      if(socket.user.hp <= 0){
+        socket.emit('battle message', null, 'You dont have any hp restore your heatlh first!')
+      }
+      else if(socket.user.mp == 0){
+        socket.emit('battle message', null, 'You dont have any mp get some by chatting first!')    
+      } else {
+        const target = msg.slice(8)
+        let dmg = socket.user.mp
+        users.filter(user => {if(user.name === target) user.hp = user.hp - dmg})
+        socket.user.mp = 0
+        io.emit('update users', users)
+        socket.emit('update mana', socket.user.mp)
+        socket.emit('battle message','SERVER: ','You struck '+target+' with '+dmg+' damage')
+        socket.broadcast.emit('battle message','SERVER: ',socket.user.name+' targeted: '+target+' with a stunning '+dmg+' damage!')
+      }
     } else {
       warrior = socket.user.warrior
       const timeStamp = moment().format('LT')
       socket.emit('chat message','You', msg, timeStamp, 'me', warrior)
       socket.broadcast.emit('chat message', nickName, msg, timeStamp, 'other', warrior) 
       socket.user.mp = socket.user.mp + mg
+      socket.emit('update mana', socket.user.mp)
     }
     
     if(socket.user.mp >= 50){
-      socket.emit('battle message','You','Special move active! Type: "/special {target}" to 1 shot an enemy')
+      socket.emit('battle message','You','Special move active!')
     }
 
   })

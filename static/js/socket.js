@@ -52,20 +52,26 @@
     messages.appendChild(newMessage)
     newMessage.scrollIntoView()
   })
-
+  socket.on('update mana', function(mana){
+    const manaBar = document.querySelector('.mana-pool')
+    manaBar.classList.add('mp-'+mana)
+  })
   socket.on('update users', function(users){
     const memberList = document.getElementById('member-list')
     const userList = document.querySelector('#member-list ul')
+    
     userList.innerHTML = ''
     users.forEach(user => {
+      const userContainer = document.createElement('div')
       const userItem = document.createElement('li')
       const userHp = document.createElement('progress')
       
       userItem.textContent = user.name
       userHp.setAttribute('max', 100)
       userHp.setAttribute('value', user.hp)
-      userItem.appendChild(userHp)
-      userList.appendChild(userItem)
+      userContainer.appendChild(userItem)
+      userContainer.appendChild(userHp)
+      userList.appendChild(userContainer)
       
     })
     memberList.appendChild(userList)
