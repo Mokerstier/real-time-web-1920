@@ -5,7 +5,7 @@ Instagram for graffiti fans
 Track graffiti's as they are posted by other users and show them on a map based on GEO-location.
 
 #### Features
-- [ ] User login
+- [X] User login
 - [ ] Upload pictures
 - [ ] Add meta-data to pictures
 - [ ] Display pictures in a map (mapBox)
