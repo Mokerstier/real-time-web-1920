@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <% include('../partials/head') %>
+<body>
+    <main class="login_form">
+    <form action="/login" method="post">
+        <fieldset>
+            <legend>Inloggen </legend>
+            <div class="form_field">       
+                <input type="email" name="username" id="email" required>
+                <label for="email">E-mailadres</label>
+            </div>
+            <div class="form_field">
+                <input id="password" name="password" type="password" required>
+                <label for="password">Wachtwoord</label>
+            </div>
+        
+            <button class="form__button" type="submit">Login</button>
+            <a href="">Wachtwoord vergeten?</a>
+            <a href="/register">Register</a>
+        </fieldset>
+    </form>
+</main>
+</body>
+</html>

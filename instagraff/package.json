@@ -1,0 +1,41 @@
+{
+  "name": "instagraff",
+  "version": "1.0.0",
+  "description": "Instagram for graffers",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mokerstier/real-time-web-1920/instagraff"
+  },
+  "keywords": [
+    "social",
+    "media",
+    "graffiti",
+    "photos"
+  ],
+  "author": "Wouter van der Heijde",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "ejs": "^3.0.2",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "mapbox-gl": "^1.9.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.9.9",
+    "mongoose-unique-validator": "^2.0.3",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "session": "^0.1.0",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
