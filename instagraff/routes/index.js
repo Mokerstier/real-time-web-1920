@@ -5,6 +5,9 @@ function routes(){
 		onRegister,
 		onLogout
 	} = require("../controllers/render/login");
+	const {
+		onUpload
+	} = require("../controllers/upload")
 
     const exRoutes = require("express").Router();
 	const bodyParser = require("body-parser");
@@ -24,7 +27,8 @@ function routes(){
 		})
         // POST routes
         .post("/login", onLoginPost)
-        .post("/register", onLoginPost)
+		.post("/register", onLoginPost)
+		.post("/upload", onUpload)
 
         return exRoutes
 }

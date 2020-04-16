@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
 		required: [true, "can't be blank"],
 		index: true,
 		required: true
+	},
+	img: {
+		type: Array,
+		index: true,
 	}
 });
 
