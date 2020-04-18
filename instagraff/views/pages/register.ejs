@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <% include('../partials/head') %>
-  </head>
+  <%- include('../partials/upload-graffs.ejs') %>
   <body>
     <form
       method="POST"
       id="newUser"
       action="/register"
-      class="ac-radio ac-fill"
     >
       <h1>Sign up</h1>
       <fieldset>
@@ -26,6 +23,5 @@
       </fieldset>
       <button class="form__button" type="submit">Registreer</button>
     </form>
-    <script src="/public/js/radio.js"></script>
   </body>
 </html>

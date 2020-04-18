@@ -1,4 +1,29 @@
 <form id="upload" enctype="multipart/form-data" action="/upload" method="post">
-    <input type="file" name="userImage" id="">
+    <label for="artist">Artist name:
+        <input name="artist" type="text" id="artist">
+    </label>
+    <fieldset required>
+        <legend>What type of graffiti?</legend>
+        <label for="tag">Tag
+            <input type="checkbox" name="style" id="tag" value="tag">
+        </label>
+        <label for="piece">Piece
+            <input type="checkbox" name="style" id="piece" value="piece">
+        </label>
+        <label for="throw">Throw-up
+            <input type="checkbox" name="style" id="throw" value="throw">
+        </label>
+    </fieldset>
+    <fieldset>
+        <legend>Where did you spot this graff?</legend>
+        <label for="lat">Latitude
+            <input type="text" name="lat" id="lat">
+        </label>
+        <label for="lon">Longtitude
+            <input type="text" name="lon" id="lon">
+        </label>
+    </fieldset>
+    
+    <input required type="file" name="userImage" id="">
     <button type="submit">Upload</button>
 </form>

@@ -35,6 +35,8 @@ const options = {
 var uri = process.env.MONGODB_URI;
 const port = process.env.PORT;
 const app = express();
+const http = require('http').createServer(app)
+const io = require('socket.io')(http)
 
 mongoose.connect(uri, options);
 mongoose.connection.on("open", function(err, doc) {
@@ -62,4 +64,21 @@ app
 	.set("view engine", "ejs")
 	.set("trust proxy", 1); // used because not communicating over HTTPS and want to set cookie
 
-app.listen(port, () => console.log(`server is gestart op port ${port}`));
+// app.listen(port, () => console.log(`server is gestart op port ${port}`));
+io.on('connection', function(socket){
+	
+	console.log(`user connected as ${socket.id}`)
+	
+	socket.on('image upload', function(geoTag, artist){
+		console.log('update map')
+		socket.emit('update map', geoTag, artist)
+	})
+	
+	socket.on('disconnect', function(){
+
+		console.log(`user disconnected`)
+	})
+})
+http.listen(process.env.PORT, function(){
+	console.log(`listening on ${process.env.PORT}`)
+  })
