@@ -2,10 +2,10 @@ const express = require("express");
 const session = require("express-session");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const urlencodedParser = bodyParser.urlencoded({ extended: true });
+const urlencodedParser = bodyParser.urlencoded({limit:'3000mb', extended: false, parameterLimit: 1000000 });
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
-
+const {onUpload} = require('./controllers/upload')
 
 // routes
 const { routes } = require("./routes/index");
@@ -60,6 +60,7 @@ app
 	)
 	.use(passport.initialize())
 	.use(passport.session())
+	.use("/upload", onUpload)
 	.use("/", routes)
 	.set("view engine", "ejs")
 	.set("trust proxy", 1); // used because not communicating over HTTPS and want to set cookie
@@ -67,11 +68,10 @@ app
 // app.listen(port, () => console.log(`server is gestart op port ${port}`));
 io.on('connection', function(socket){
 	
-	console.log(`user connected as ${socket.id}`)
-	
 	socket.on('image upload', function(geoTag, artist){
 		console.log('update map')
-		socket.emit('update map', geoTag, artist)
+		
+		io.emit('update map', geoTag, artist)
 	})
 	
 	socket.on('disconnect', function(){

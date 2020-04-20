@@ -13,37 +13,41 @@ var map = new mapboxgl.Map({
   zoom: 10.7,
   maxBounds: bounds,
 });
-// map.on("load", function () {
-//   map.loadImage(
-//     "./ui/icons/graffiti.png",
-//     function (error, image) {
-//       if (error) throw error;
-//       map.addImage("graffiti", image);
-//       map.addSource("point", {
-//         type: "geojson",
-//         data: {
-//           type: "FeatureCollection",
-//           features: [
-//             {
-//               type: "Feature",
-//               geometry: {
-//                 type: "Point",
-//                 coordinates: [ 5.23, .688611 ],
-//               },
-//             },
-//           ],
-//         },
-//       });
-//       map.addLayer({
-//         id: "points",
-//         type: "symbol",
-//         source: "point",
-//         layout: {
-//           "icon-image": "graffiti",
-//           "icon-size": 0.12,
-//         },
-//       });
-//     }
-//   );
-// });
+console.log(dataJSON);
 
+map.on("load", () => {
+  dataJSON.forEach(element => {
+    console.log(element.ref)
+    element = {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [element.gps.lat, element.gps.long] ,
+            
+          },
+          properties: {
+            title: element.artist,
+            description: element.style,
+            ref: element.ref
+          },
+        },
+      ],
+    };
+    element.features.forEach(function (marker) {
+      var el = document.createElement("div")
+      el.className = "marker"
+
+      new mapboxgl.Marker(el)
+      .setLngLat(marker.geometry.coordinates)
+      .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+      .setHTML(`<img src="${marker.properties.ref}" alt="">
+                <h3>${marker.properties.title}</h3>
+                <p> ${marker.properties.description}</p>
+                `))
+      .addTo(map)
+    });
+  })
+});

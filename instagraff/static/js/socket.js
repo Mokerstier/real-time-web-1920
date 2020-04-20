@@ -6,19 +6,33 @@ const upload = document.querySelector("#upload");
   console.log("hello");
   upload.addEventListener("submit", function (e) {
     e.preventDefault();
+    const style = []
+    const checkboxes = document.querySelectorAll('input[type=checkbox]')
+    console.log(checkboxes)
+    checkboxes.forEach(checkbox =>{
+      if(checkbox.checked === true){
+        console.log(checkbox)
+        style.push(checkbox.value)
+      }
+    })
+    
+    console.log(style)
     const geoLat = document.querySelector("#lat").value;
     const geoLon = document.querySelector("#lon").value;
     const geoTag = [geoLat, geoLon];
     const artist = document.querySelector('#artist').value
+    
 
+    
+    sendFiles()
     socket.emit("image upload", geoTag, artist);
-    upload.submit();
+    // upload.submit();
     upload.reset();
     return false
   });
 
   //Update Map
-  socket.on("update map", function (geoTag, artist) {
+  socket.on("update map", function (geoTag, artist, ref) {
     console.log("adding graffiti to map on location " + geoTag);
     var geojson = {
       type: "FeatureCollection",
@@ -32,6 +46,7 @@ const upload = document.querySelector("#upload");
           properties: {
             title: artist,
             description: "Recently updated",
+            ref: ref
           },
         },
       ],

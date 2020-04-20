@@ -16,13 +16,13 @@ const Flickr = require("flickrapi"),
     access_token_secret: process.env.FLICKR_ACCESS_TOKEN_SECRET,
   };
 
-function flickrUpload(req, user_id) {
+async function flickrUpload(req, user_id) {
   Flickr.authenticate(flickrOptions, function (error, flickr) {
     var uploadOptions = {
       photos: [
         {
-          title: "test",
-          tags: [req.body.artist, req.body.style],
+          title: req.body.artist,
+          tags: req.body.style,
           photo: "public/uploads/" + req.file.filename,
         },
       ],
@@ -31,83 +31,14 @@ function flickrUpload(req, user_id) {
       if (err) {
         return console.error(error);
       }
-
+      getFlickrURL(req, result[0], user_id)
       console.log("photo uploaded", result[0]);
-      try {
-        new ExifImage(
-          { image: "public/uploads/" + req.file.filename },
-          async function (error, exifData) {
-            if (error) console.log("Error: " + error.message);
-            
-            if (exifData) {
-              if (exifData.gps.GPSLatitude) {
-                latDeg = exifData.gps.GPSLatitude[0];
-                latMin = exifData.gps.GPSLatitude[1];
-                latSec = exifData.gps.GPSLatitude[2];
-                latRef = exifData.gps.GPSLatitudeRef;
-                lat = `${latDeg} ${latMin} ${latSec} ${latRef}`;
 
-                longDeg = exifData.gps.GPSLongitude[0];
-                longMin = exifData.gps.GPSLongitude[1];
-                longSec = exifData.gps.GPSLongitude[2];
-                longRef = exifData.gps.GPSLongitudeRef;
-                long = `${longDeg} ${longMin} ${longSec} ${longRef}`;
-
-                coordWithSpaces = new Coordinate(`${lat} ${long}`);
-
-                
-                let image = new graffitiSchema({
-                  artist: req.body.artist,
-                  gps: coordWithSpaces.toGeoJson(),
-                  date: exifData.exif.DateTimeOriginal,
-                  uploader: user_id,
-                  ref: 'https://www.flickr.com/photos/187984596@N04/'+result[0],
-                  style: req.body.style,
-                });
-
-                await image.save();
-                console.log("image saved");
-              } else { 
-                console.log("no GPS data");
-                geoTag = [req.body.lat, req.body.lon];
-                let image = new graffitiSchema({
-                  artist: req.body.artist,
-                  gps: geoTag,
-                  date:exifData.exif.DateTimeOriginal,
-                  uploader: user_id,
-                  ref: 'https://www.flickr.com/photos/187984596@N04/'+result[0],
-                  style: req.body.style,
-                  
-                })
-                console.log("image saved " + image)
-                await image.save();
-              
-              }
-            } else {
-              geoTag = [req.body.lat, req.body.lon]
-              let image = new graffitiSchema({
-                artist: req.body.artist,
-                gps: geoTag,
-                date: Date.now(),
-                uploader: user_id,
-                ref: 'https://www.flickr.com/photos/187984596@N04/'+result[0],
-                style: req.body.style,
-                
-              })
-              console.log("no Exif data");
-              await image.save();
-              console.log("image saved " + image + flickrURL);
-            }
-          }
-        );
-      } catch (error) {
-        console.log("Error: " + error.message);
-      }
     });
   });
 }
 
-function getFlickrURL(photoId) {
+function getFlickrURL(req, photoId, user_id) {
   console.log("fetching foto data");
   Flickr.authenticate(flickrOptions, function (error, flickr) {
     flickr.photos.getInfo(
@@ -116,10 +47,89 @@ function getFlickrURL(photoId) {
       },
       function (err, result) {
         if (err) console.log(err);
-       
-        
-        else return console.log('got some data '+ result.photo.urls.url[0]._content ), result.photo.urls.url[0]._content
+        const flickrPhoto = result.photo
+        let photoURL = `https://farm${flickrPhoto.farm}.staticflickr.com/${flickrPhoto.server}/${flickrPhoto.id}_${flickrPhoto.secret}.${flickrPhoto.originalformat}`
+        console.log('got a URL '+ photoURL) 
+        try {
+          new ExifImage(
+            { image: "public/uploads/" + req.file.filename },
+            async function (error, exifData) {
+              if (error) console.log("Error: " + error.message);
+              
+              if (exifData) {
+                if (exifData.gps.GPSLatitude) {
+                  latDeg = exifData.gps.GPSLatitude[0];
+                  latMin = exifData.gps.GPSLatitude[1];
+                  latSec = exifData.gps.GPSLatitude[2];
+                  latRef = exifData.gps.GPSLatitudeRef;
+                  lat = `${latDeg} ${latMin} ${latSec} ${latRef}`;
+  
+                  longDeg = exifData.gps.GPSLongitude[0];
+                  longMin = exifData.gps.GPSLongitude[1];
+                  longSec = exifData.gps.GPSLongitude[2];
+                  longRef = exifData.gps.GPSLongitudeRef;
+                  long = `${longDeg} ${longMin} ${longSec} ${longRef}`;
+  
+                  coordWithSpaces = new Coordinate(`${lat} ${long}`);
+  
+                  
+                  let image = new graffitiSchema({
+                    artist: req.body.artist,
+                    gps: {
+                      lat: coordWithSpaces.toGeoJson()[0],
+                      long: coordWithSpaces.toGeoJson()[1]
+                    },
+                    date: exifData.exif.DateTimeOriginal,
+                    uploader: user_id,
+                    ref: photoURL,
+                    style: req.body.style,
+                  });
+  
+                  await image.save();
+                  console.log("image saved");
+                } else { 
+                  console.log("no GPS data");
+  
+                  let image = new graffitiSchema({
+                    artist: req.body.artist,
+                    gps: {
+                      lat: req.body.lat,
+                      long: req.body.lon
+                    },
+                    date:exifData.exif.DateTimeOriginal,
+                    uploader: user_id,
+                    ref: photoURL,
+                    style: req.body.style,
+                    
+                  })
+                  console.log("image saved " + image)
+                  await image.save();
+                
+                }
+              } else {
+                geoTag = [req.body.lat, req.body.lon]
+                let image = new graffitiSchema({
+                  artist: req.body.artist,
+                  gps: {
+                    lat: req.body.lat,
+                    long: req.body.lon
+                  },
+                  date: Date.now(),
+                  uploader: user_id,
+                  ref: photoURL,
+                  style: req.body.style,
+                  
+                })
+                console.log("no Exif data");
+                await image.save();
+                console.log("image saved " + image );
+              }
+            }
+          );
 
+        } catch (error) {
+          console.log("Error: " + error.message);
+        }
       }
     );
   });

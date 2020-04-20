@@ -9,7 +9,6 @@ const userSchema = new mongoose.Schema({
 		lowercase: true,
 		required: [true, "can't be blank"],
 		match: [/\S+@\S+\.\S+/, "is invalid"],
-
 		index: true,
 		unique: true,
 		required: true
@@ -21,7 +20,7 @@ const userSchema = new mongoose.Schema({
 	firstName: {
 		type: String,
 		lowercase: true,
-		required: [true, 'can\'t be blank'],
+		required: [true, "can't be blank"],
 		index: true,
 		required: true
 	},

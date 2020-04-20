@@ -5,14 +5,15 @@ function routes(){
 		onRegister,
 		onLogout
 	} = require("../controllers/render/login");
+	const isLoggedIn = require('../controllers/isloggedin')
 	const {
 		onUpload
 	} = require("../controllers/upload")
-
+	const graffitis = require('../controllers/graffitis')
     const exRoutes = require("express").Router();
 	const bodyParser = require("body-parser");
 	const urlencodedParser = bodyParser.urlencoded({ extended: true });
-	// const isLoggedIn = require("../controllers/loggedin");
+	
 	// const changePassword = require("../controllers/change-password");
         
         // GET routes
@@ -20,9 +21,11 @@ function routes(){
         
         .get("/login", onLoginGet)
         .get("/register", onRegister)
-        .get("/", (req, res) => {
+        .get("/", graffitis.getGraffs, (req, res) => {
 			res.render("pages/home.ejs", {
-				title: "Instagraff"
+				title: "Instagraff",
+				message: '',
+				graffitis: res.locals.results
 			});
 		})
         // POST routes

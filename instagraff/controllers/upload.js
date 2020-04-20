@@ -22,7 +22,7 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     checkFileType(file, cb);
   },
-}).single("userImage");
+}).single("file");
 // check filetype for uploads
 function checkFileType(file, next) {
   // allowed extensions
@@ -39,10 +39,13 @@ function checkFileType(file, next) {
 }
 
 function onUpload(req, res) {
-    const user_id = req.session.passport.user;
-
-  upload(req, res, (err) => {
+    const user_id = req.session.passport.user || 'test';
+    console.log('uploading')
+    
+  upload(req, res, async (err) => {
     if (err) {
+      console.log(req)
+      console.log(err)
       res.render("/settings", {
         msg: err,
       });
@@ -52,16 +55,17 @@ function onUpload(req, res) {
           msg: "Error: no file selected!",
         });
       } else {
-        flickr.flickrUpload(req, user_id) 
-
+        const ref = await flickr.flickrUpload(req, user_id) 
+        console.log(ref)
         userSchema.findOne({ _id: user_id }, async (err, doc) => {
           if (err) throw err;
 
           doc.img.push(req.file.filename);
           await doc.save();
 
-          res.render("pages/home.ejs");
+          
         });
+        res.status(200)
       }
       
     }

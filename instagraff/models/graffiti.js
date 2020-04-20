@@ -2,8 +2,6 @@ const mongoose = require("mongoose");
 
 const graffitiSchema = new mongoose.Schema({
 
-   
-
         artist:{
             type: String,
             lowercase: true,
@@ -14,8 +12,14 @@ const graffitiSchema = new mongoose.Schema({
             index: true
         },
         gps:{
-            type: Array,
-            index: true
+            lat:{
+                type:String,
+                match: [/[0-9]{1,2}(\.{1}[0-9]{1,6})?/, 'is invalid']
+            },
+            long:{
+                type:String,
+                match: [/[0-9]{1,2}(\.{1}[0-9]{1,6})?/, 'is invalid']
+            },
         },
         uploader:{
             type: String,
