@@ -1,7 +1,10 @@
 const upload = document.querySelector("#upload");
+function hasClass(elem, className) {
+  return elem.classList.contains(className);
+}
+
 
 (function () {
-  // eslint-disable-next-line no-undef
   const socket = io();
   console.log("hello");
   upload.addEventListener("submit", function (e) {
@@ -21,16 +24,25 @@ const upload = document.querySelector("#upload");
     const geoLon = document.querySelector("#lon").value;
     const geoTag = [geoLat, geoLon];
     const artist = document.querySelector('#artist').value
-    
 
-    
     sendFiles()
     socket.emit("image upload", geoTag, artist);
     // upload.submit();
     upload.reset();
     return false
   });
-
+  document.addEventListener('click', function (e) {
+    if (hasClass(e.target, 'king')) {
+      
+      const photoID = e.target.getAttribute('aria-label')
+      socket.emit('vote king', photoID, userID)
+    } else if (hasClass(e.target, 'toy')) {
+      
+      const photoID = e.target.getAttribute('aria-label')
+      socket.emit('vote toy', photoID, userID)
+        // Do your other thing
+    }
+  }, false);
   //Update Map
   socket.on("update map", function (geoTag, artist, ref) {
     console.log("adding graffiti to map on location " + geoTag);

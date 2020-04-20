@@ -34,6 +34,14 @@ const userSchema = new mongoose.Schema({
 	img: {
 		type: Array,
 		index: true,
+	},
+	liked:{
+		index: true,
+		type: Array
+	},
+	disliked:{
+		index: true,
+		type: Array
 	}
 });
 

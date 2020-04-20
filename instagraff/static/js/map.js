@@ -13,11 +13,11 @@ var map = new mapboxgl.Map({
   zoom: 10.7,
   maxBounds: bounds,
 });
-console.log(dataJSON);
+
 
 map.on("load", () => {
   dataJSON.forEach(element => {
-    console.log(element.ref)
+   
     element = {
       type: "FeatureCollection",
       features: [
@@ -31,7 +31,8 @@ map.on("load", () => {
           properties: {
             title: element.artist,
             description: element.style,
-            ref: element.ref
+            ref: element.ref,
+            id: element._id
           },
         },
       ],
@@ -46,6 +47,8 @@ map.on("load", () => {
       .setHTML(`<img src="${marker.properties.ref}" alt="">
                 <h3>${marker.properties.title}</h3>
                 <p> ${marker.properties.description}</p>
+                <button aria-label="${marker.properties.id}" class="king">King</button>
+                <button aria-label="${marker.properties.id}" class="toy">Toy</button>
                 `))
       .addTo(map)
     });
