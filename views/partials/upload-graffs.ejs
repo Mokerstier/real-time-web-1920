@@ -1,4 +1,6 @@
 <section class="form_upload">
+    <label for="show-form"></label>
+    <input type="checkbox" name="" id="show-form">
 <form id="upload" enctype='application/x-www-form-urlencoded' action="/upload" method="post">
     <label for="artist">Artist name:
         <input name="artist" type="text" id="artist">
@@ -17,12 +19,15 @@
     </fieldset>
     <fieldset>
         <legend>Where did you spot this graff?</legend>
+        
         <label for="lat">Latitude
             <input type="text" name="lat" id="lat">
         </label>
         <label for="lon">Longtitude
             <input type="text" name="lon" id="lon">
         </label>
+        <p>Or use a marker to define the position!</p>
+        <a href="#" id="drop-marker">Use marker</a>
     </fieldset>
     
     <input type="file" id="fileElem" name="file" multiple accept="image/*" style="display:none">

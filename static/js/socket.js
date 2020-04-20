@@ -25,12 +25,14 @@ function hasClass(elem, className) {
     const geoTag = [geoLat, geoLon];
     const artist = document.querySelector('#artist').value
 
-    sendFiles()
-    socket.emit("image upload", geoTag, artist);
+    const img = await sendFiles()
+     
+    socket.emit("image upload", geoTag, artist, style, img);
     // upload.submit();
     upload.reset();
     return false
   });
+
   document.addEventListener('click', function (e) {
     if (hasClass(e.target, 'king')) {
       
@@ -44,7 +46,7 @@ function hasClass(elem, className) {
     }
   }, false);
   //Update Map
-  socket.on("update map", function (geoTag, artist, ref) {
+  socket.on("update map", function (geoTag, artist, style, ref) {
     console.log("adding graffiti to map on location " + geoTag);
     var geojson = {
       type: "FeatureCollection",
@@ -57,7 +59,7 @@ function hasClass(elem, className) {
           },
           properties: {
             title: artist,
-            description: "Recently updated",
+            description: style,
             ref: ref
           },
         },
@@ -70,7 +72,7 @@ function hasClass(elem, className) {
       new mapboxgl.Marker(el)
       .setLngLat(marker.geometry.coordinates)
       .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-      .setHTML(`
+      .setHTML(`<img src="${marker.properties.ref}" alt"${marker.properties.description} by ${marker.properties.title} ">
                 <h3>${marker.properties.title}</h3>
                 <p> ${marker.properties.description}</p>
                 `))

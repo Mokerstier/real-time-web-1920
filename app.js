@@ -68,9 +68,9 @@ app
 // app.listen(port, () => console.log(`server is gestart op port ${port}`));
 io.on('connection', function(socket){
 	
-	socket.on('image upload', function(geoTag, artist){
+	socket.on('image upload', function(geoTag, artist, style, img){
 		console.log('update map')
-		io.emit('update map', geoTag, artist)
+		io.emit('update map', geoTag, artist, style, img)
 	})
 
 	// Rank photo's
@@ -84,7 +84,7 @@ io.on('connection', function(socket){
 		// <-- code here -->
 		io.emit('update ranks', photoID, userID)
 	})
-	
+
 	socket.on('disconnect', function(){
 
 		console.log(`user disconnected`)

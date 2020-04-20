@@ -42,7 +42,7 @@ function handleFiles() {
     }
   }
 }
-function sendFiles() {
+async function sendFiles() {
     const imgs = document.querySelectorAll(".obj")
     for (let i = 0; i < imgs.length; i++) {
       new FileUpload(imgs[i], fileElem.files[i]);
@@ -75,7 +75,6 @@ function sendFiles() {
     data = new FormData(form)
     console.log(data)
     reader.onload = function(evt) {
-        // data.append("file", file )
         console.log(data)
       xhr.send(data);
     };
