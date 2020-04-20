@@ -38,4 +38,4 @@ Database
 - [ ] Comment on pictures
 
 ### DLC Diagram
-![DLC - Instagraff](https://raw.githubusercontent.com/Mokerstier/real-time-web-1920/master/instagraff/repo-img/DLC-instagraff.png)
+![DLC - Instagraff](https://github.com/Mokerstier/real-time-web-1920/blob/b247101cb3a9a2dccb0ff761afe5fe6046aefb58/repo-img/DLC-instagraff.png)
