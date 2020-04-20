@@ -70,8 +70,19 @@ io.on('connection', function(socket){
 	
 	socket.on('image upload', function(geoTag, artist){
 		console.log('update map')
-		
 		io.emit('update map', geoTag, artist)
+	})
+
+	// Rank photo's
+	socket.on('vote king', function(photoID, userID){
+		// write data to DB
+		// <-- code here -->
+		io.emit('update ranks', photoID, userID)
+	})
+	socket.on('vote toy', function(photoID, userID){
+		// write data to DB
+		// <-- code here -->
+		io.emit('update ranks', photoID, userID)
 	})
 	
 	socket.on('disconnect', function(){
