@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <%- include('../partials/head.ejs') %>
-  <body>
+
     <div>
       <% if(message){ %>
       <h2><%= message %></h2>
       <% } %>
     </div>
     <div id="map"></div>
-    <script>let dataJSON =<%-JSON.stringify(results)%> </script>
+    <script>
+    let dataJSON = <%-JSON.stringify(results )%>
+    </script>
     <%- include('../partials/upload-graffs.ejs') %>
-  </body>
-</html>
+    <%- include('../partials/footer.ejs') %>
