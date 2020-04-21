@@ -24,6 +24,8 @@ dropMarker.addEventListener('click', function(e){
 })
 
 map.on("load", () => {
+  console.log(dataJSON)
+  
   dataJSON.forEach((element) => {
     element = {
       type: "FeatureCollection",
@@ -43,6 +45,7 @@ map.on("load", () => {
         },
       ],
     };
+    buildLocationList(element)
     element.features.forEach(function (marker) {
       var el = document.createElement("div");
       el.className = "marker";
@@ -60,9 +63,38 @@ map.on("load", () => {
         )
         .addTo(map);
     });
+  
   });
+  
 });
+function buildLocationList(data) {
+  data.features.forEach(function(store, i){
+    /**
+     * Create a shortcut for `store.properties`,
+     * which will be used several times below.
+    **/
+    var prop = store.properties;
 
+    /* Add a new listing section to the sidebar. */
+    var listings = document.getElementById('listings');
+    var listing = listings.appendChild(document.createElement('div'));
+    /* Assign a unique `id` to the listing. */
+    listing.id = "listing-" + prop.id;
+    /* Assign the `item` class to each listing for styling. */
+    listing.className = 'item';
+
+    /* Add the link to the individual listing created above. */
+    var link = listing.appendChild(document.createElement('a'));
+    link.href = '#';
+    link.className = 'title';
+    link.id = "link-" + prop.id;
+    link.innerHTML = prop.title;
+    
+    var details = listing.appendChild(document.createElement('p'));
+    details.innerHTML = prop.description;
+
+  })
+}
 
 const marker = new mapboxgl.Marker({
   draggable: true,

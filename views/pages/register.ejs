@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-  <%- include('../partials/upload-graffs.ejs') %>
 
+<%- include('../partials/head.ejs') %>
+<div class="background_img"></div>
+<main class="form_login">
     <form
       method="POST"
       id="newUser"
       action="/register"
     >
-      <h1>Sign up</h1>
+      <h1>Register</h1>
       <fieldset>
         <label for="firstName">Voornaam</label>
         <input type="text" name="firstName" class="" required />
@@ -22,5 +22,7 @@
         <input type="password" name="password" class="field field4" required />
       </fieldset>
       <button class="form__button" type="submit">Registreer</button>
+      <p>Already got an account? <a href="/login"> login</a></p>
     </form>
+  </main>
     <%- include('../partials/footer.ejs') %>
