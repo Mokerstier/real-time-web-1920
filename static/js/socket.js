@@ -27,7 +27,7 @@ function hasClass(elem, className) {
 
     const img = sendFiles()
      
-    socket.emit("image upload", geoTag, artist, style, img);
+    socket.emit("image upload", geoTag, artist, style);
     // upload.submit();
     upload.reset();
     return false
@@ -46,7 +46,7 @@ function hasClass(elem, className) {
     }
   }, false);
   //Update Map
-  socket.on("update map", function (geoTag, artist, style, ref) {
+  socket.on("update map", function (geoTag, artist, style) {
     console.log("adding graffiti to map on location " + geoTag);
     var geojson = {
       type: "FeatureCollection",
@@ -60,7 +60,7 @@ function hasClass(elem, className) {
           properties: {
             title: artist,
             description: style,
-            ref: ref
+            // ref: ref
           },
         },
       ],
