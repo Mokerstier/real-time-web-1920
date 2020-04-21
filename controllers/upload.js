@@ -22,7 +22,7 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     checkFileType(file, cb);
   },
-}).single("file");
+}).single("file")
 // check filetype for uploads
 function checkFileType(file, next) {
   // allowed extensions
@@ -33,6 +33,7 @@ function checkFileType(file, next) {
   const mimetype = filetypes.test(file.mimetype);
 
   if (mimetype && extname) {
+    console.log('img passed')
     return next(null, true);
   }
   next("Error: images only");
@@ -41,7 +42,7 @@ function checkFileType(file, next) {
 function onUpload(req, res) {
     const user_id = req.session.passport.user || 'test';
     console.log('uploading')
-    
+
   upload(req, res, async (err) => {
     if (err) {
       console.log(req)
@@ -65,7 +66,7 @@ function onUpload(req, res) {
 
           
         });
-        res.status(200)
+        res.status(200, ref)
       }
       
     }

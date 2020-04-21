@@ -65,7 +65,7 @@ app
 
 // app.listen(port, () => console.log(`server is gestart op port ${port}`));
 io.on('connection', function(socket){
-	
+	console.log('user connected')
 	socket.on('image upload', function(geoTag, artist, style, img){
 		console.log('update map')
 		io.emit('update map', geoTag, artist, style, img)

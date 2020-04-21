@@ -80,4 +80,5 @@ async function sendFiles() {
     };
     console.log(file)
     reader.readAsBinaryString(file);
+    
   }

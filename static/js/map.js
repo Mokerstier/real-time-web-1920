@@ -24,8 +24,6 @@ dropMarker.addEventListener('click', function(e){
 })
 
 map.on("load", () => {
-  console.log(dataJSON)
-  
   dataJSON.forEach((element) => {
     element = {
       type: "FeatureCollection",
@@ -68,12 +66,12 @@ map.on("load", () => {
   
 });
 function buildLocationList(data) {
-  data.features.forEach(function(store, i){
+  data.features.forEach(function(graff, i){
     /**
      * Create a shortcut for `store.properties`,
      * which will be used several times below.
     **/
-    var prop = store.properties;
+    var prop = graff.properties;
 
     /* Add a new listing section to the sidebar. */
     var listings = document.getElementById('listings');
@@ -86,19 +84,43 @@ function buildLocationList(data) {
     /* Add the link to the individual listing created above. */
     var link = listing.appendChild(document.createElement('a'));
     link.href = '#';
-    link.className = 'title';
+    link.classList.add('title','link')
     link.id = "link-" + prop.id;
     link.innerHTML = prop.title;
-    
+    link.data = graff.geometry.coordinates
     var details = listing.appendChild(document.createElement('p'));
     details.innerHTML = prop.description;
-
+    
+    
   })
 }
+document.addEventListener('click', function(e){
+  
+  if (hasClass(e.target, 'link')) {
+    e.preventDefault()
+  let clickedListing = e.target.data
+  console.log(clickedListing)
+  flyToGraff(clickedListing);
+  
+  let activeItem = document.getElementsByClassName('active');
+  if (activeItem[0]) {
+    activeItem[0].classList.remove('active');
+  }
+  e.target.parentNode.classList.add('active');
+  }
+}, false);
+
 
 const marker = new mapboxgl.Marker({
   draggable: true,
 })
+
+function flyToGraff(currentFeature) {
+  map.flyTo({
+    center: currentFeature,
+    zoom: 15
+  });
+}
 
 function createMarker() {
   coords = map.getCenter()
@@ -107,13 +129,13 @@ function createMarker() {
     .setLngLat([coords.lng, coords.lat])
     .addTo(map);
     let lngLat = marker.getLngLat();
-    Lat.value = String(lngLat.lat).substring(0, 7);
-    Lon.value = String(lngLat.lng).substring(0, 7);
+    Lat.value = String(lngLat.lng).substring(0, 7);
+    Lon.value = String(lngLat.lat).substring(0, 7);
     
   function onDragEnd() {
     lngLat = marker.getLngLat();
-    Lat.value = String(lngLat.lat).substring(0, 7);
-    Lon.value = String(lngLat.lng).substring(0, 7);
+    Lat.value = String(lngLat.lng).substring(0, 7);
+    Lon.value = String(lngLat.lat).substring(0, 7);
   }
   
   marker.on("dragend", onDragEnd);

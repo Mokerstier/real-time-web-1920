@@ -22,10 +22,10 @@ function hasClass(elem, className) {
     console.log(style)
     const geoLat = document.querySelector("#lat").value;
     const geoLon = document.querySelector("#lon").value;
-    const geoTag = [geoLat, geoLon];
+    const geoTag = [geoLon, geoLat];
     const artist = document.querySelector('#artist').value
 
-    const img = await sendFiles()
+    const img = sendFiles()
      
     socket.emit("image upload", geoTag, artist, style, img);
     // upload.submit();

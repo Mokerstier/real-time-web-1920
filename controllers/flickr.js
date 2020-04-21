@@ -31,14 +31,15 @@ async function flickrUpload(req, user_id) {
       if (err) {
         return console.error(error);
       }
-      getFlickrURL(req, result[0], user_id)
       console.log("photo uploaded", result[0]);
+      return getFlickrURL(req, result[0], user_id)
+      
 
     });
   });
 }
 
-function getFlickrURL(req, photoId, user_id) {
+async function getFlickrURL(req, photoId, user_id) {
   console.log("fetching foto data");
   Flickr.authenticate(flickrOptions, function (error, flickr) {
     flickr.photos.getInfo(
@@ -126,7 +127,7 @@ function getFlickrURL(req, photoId, user_id) {
               }
             }
           );
-
+            return photoURL
         } catch (error) {
           console.log("Error: " + error.message);
         }
