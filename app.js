@@ -32,8 +32,7 @@ const options = {
 };
 
 // Settings for online DATABASE
-var uri = process.env.MONGODB_URI;
-const port = process.env.PORT;
+const uri = process.env.MONGODB_URI;
 const app = express();
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
@@ -60,7 +59,6 @@ app
 	)
 	.use(passport.initialize())
 	.use(passport.session())
-	// .use("/upload", onUpload)
 	.use("/", routes)
 	.set("view engine", "ejs")
 	.set("trust proxy", 1); // used because not communicating over HTTPS and want to set cookie
