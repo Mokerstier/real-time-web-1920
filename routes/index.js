@@ -31,7 +31,9 @@ function routes(){
         // POST routes
         .post("/login", onLoginPost)
 		.post("/register", onLoginPost)
-		.post("/upload",isLoggedIn, onUpload)
+		.put("/upload", isLoggedIn, onUpload,(req, res)=>{
+			res.send(req)
+		})
 
         return exRoutes
 }

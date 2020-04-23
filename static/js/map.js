@@ -1,6 +1,7 @@
 let Lat = document.querySelector("#lat")
 let Lon = document.querySelector("#lon")
 const dropMarker = document.querySelector('#drop-marker')
+const listings = document.getElementById('listings');
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoibW9rZXJzdGllciIsImEiOiJjazFxbm5za2sxMWE2M2NwZGNncGFzazZlIn0.0oOI9FSQB1saUbuCqq9nCw"; // replace this with your access token
@@ -74,7 +75,7 @@ function buildLocationList(data) {
     var prop = graff.properties;
 
     /* Add a new listing section to the sidebar. */
-    var listings = document.getElementById('listings');
+    
     var listing = listings.appendChild(document.createElement('div'));
     /* Assign a unique `id` to the listing. */
     listing.id = "listing-" + prop.id;
@@ -82,13 +83,13 @@ function buildLocationList(data) {
     listing.className = 'item';
 
     /* Add the link to the individual listing created above. */
-    var link = listing.appendChild(document.createElement('a'));
+    const link = listing.appendChild(document.createElement('a'));
     link.href = '#';
     link.classList.add('title','link')
     link.id = "link-" + prop.id;
     link.innerHTML = prop.title;
     link.data = graff.geometry.coordinates
-    var details = listing.appendChild(document.createElement('p'));
+    const details = listing.appendChild(document.createElement('p'));
     details.innerHTML = prop.description;
     
     
@@ -111,7 +112,7 @@ document.addEventListener('click', function(e){
 }, false);
 
 
-const marker = new mapboxgl.Marker({
+const geoMarker = new mapboxgl.Marker({
   draggable: true,
 })
 
@@ -125,18 +126,18 @@ function flyToGraff(currentFeature) {
 function createMarker() {
   coords = map.getCenter()
   
-    marker
+    geoMarker
     .setLngLat([coords.lng, coords.lat])
     .addTo(map);
-    let lngLat = marker.getLngLat();
+    let lngLat = geoMarker.getLngLat();
     Lat.value = String(lngLat.lng).substring(0, 7);
     Lon.value = String(lngLat.lat).substring(0, 7);
     
   function onDragEnd() {
-    lngLat = marker.getLngLat();
+    lngLat = geoMarker.getLngLat();
     Lat.value = String(lngLat.lng).substring(0, 7);
     Lon.value = String(lngLat.lat).substring(0, 7);
   }
   
-  marker.on("dragend", onDragEnd);
+  geoMarker.on("dragend", onDragEnd);
 }

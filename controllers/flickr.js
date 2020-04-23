@@ -16,8 +16,8 @@ const Flickr = require("flickrapi"),
     access_token_secret: process.env.FLICKR_ACCESS_TOKEN_SECRET,
   };
 
-async function flickrUpload(req, user_id) {
-  Flickr.authenticate(flickrOptions, function (error, flickr) {
+async function flickrUpload(req, res, user_id) {
+  Flickr.authenticate(flickrOptions, async function (error, flickr) {
     var uploadOptions = {
       photos: [
         {
@@ -32,14 +32,14 @@ async function flickrUpload(req, user_id) {
         return console.error(error);
       }
       console.log("photo uploaded", result[0]);
-      return getFlickrURL(req, result[0], user_id)
+      return getFlickrURL(req, res, result[0], user_id)
       
 
     });
   });
 }
 
-async function getFlickrURL(req, photoId, user_id) {
+async function getFlickrURL(req, res, photoId, user_id) {
   console.log("fetching foto data");
   Flickr.authenticate(flickrOptions, function (error, flickr) {
     flickr.photos.getInfo(
@@ -127,7 +127,9 @@ async function getFlickrURL(req, photoId, user_id) {
               }
             }
           );
-            return photoURL
+          console.log('returning this URL: '+photoURL)
+            res.send({url:photoURL, id:photo_id})
+            return(photoURL)
         } catch (error) {
           console.log("Error: " + error.message);
         }

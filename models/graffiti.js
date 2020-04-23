@@ -34,12 +34,24 @@ const graffitiSchema = new mongoose.Schema({
             index: true
         },
         king:{
-            type: Number,
-            index: true
+            user:{
+                type: String,
+                index: true
+            },
+            vote:{
+                type: Number,
+                index: true
+            },
         },
         toy:{
-            type: Number,
-            index: true
+            user:{
+                type: Array,
+                index: true
+            },
+            vote:{
+                type: Number,
+                index: true
+            },
         }
     
 

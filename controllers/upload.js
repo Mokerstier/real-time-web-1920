@@ -39,7 +39,7 @@ function checkFileType(file, next) {
   next("Error: images only");
 }
 
-function onUpload(req, res) {
+async function onUpload(req, res) {
     const user_id = req.session.passport.user || 'test';
     console.log('uploading')
 
@@ -56,21 +56,26 @@ function onUpload(req, res) {
           msg: "Error: no file selected!",
         });
       } else {
-        const ref = await flickr.flickrUpload(req, user_id) 
-        console.log(ref)
+        console.log('init flickrUpload');
+        
+        
         userSchema.findOne({ _id: user_id }, async (err, doc) => {
           if (err) throw err;
 
           doc.img.push(req.file.filename);
+          console.log('saving user');
+          
           await doc.save();
 
-          
         });
-        res.status(200, ref)
+        const ref = await flickr.flickrUpload(req, res, user_id)
+        console.log(ref)
       }
       
     }
-  });
+    
+  })
+  
 }
 
 module.exports = { onUpload };
