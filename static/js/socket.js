@@ -50,67 +50,96 @@ function hasClass(elem, className) {
         upload.reset();
         return false
       })
-    // upload.submit();
-    
+
   });
 
+    //Update Map
+    socket.on("update map", function (geoTag, artist, style, url) {
+      console.log("adding graffiti to map on location " + geoTag);
+      var geojson = {
+        type: "FeatureCollection",
+        features: [
+          {
+            type: "Feature",
+            geometry: {
+              type: "Point",
+              coordinates: geoTag,
+            },
+            properties: {
+              title: artist,
+              description: style,
+              url: url
+            },
+          },
+        ],
+      };
+      geojson.features.forEach(function (marker) {
+        var el = document.createElement("div")
+        el.className = "marker"
+  
+        new mapboxgl.Marker(el)
+        .setLngLat(marker.geometry.coordinates)
+        .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+        .setHTML(`<img src="${marker.properties.url}" alt"${marker.properties.description} by ${marker.properties.title} ">
+                  <h3>${marker.properties.title}</h3>
+                  <p> ${marker.properties.description}</p>
+                  <button aria-label="${graff.id}" class="king">King</button>
+                  <span class="king-value">${graff.king}</span>
+                  <button aria-label="${graff.id}" class="toy">Toy</button>
+                  <span class="toy-value">${graff.toy}</span>
+                  `))
+        .addTo(map)
+      });
+    })
+    // Update listing
+    socket.on('update list', function(geoTag, artist, style, url, id){
+      const link = listing.appendChild(document.createElement('a'));
+      link.href = '#';
+      link.classList.add('title','link')
+      link.id = "link-" + id;
+      link.innerHTML = artist;
+      link.data = geoTag
+      const details = listing.appendChild(document.createElement('p'));
+      details.innerHTML = style;
+      const img = listing.appendChild(document.createElement('img'))
+      img.src = url
+      img.className = 'img-thumb'
+    })
+  
+
+  // Vote on images
   document.addEventListener('click', function (e) {
     if (hasClass(e.target, 'king')) {
-      
+      console.log(e.target)
       const photoID = e.target.getAttribute('aria-label')
-      socket.emit('vote king', photoID, userID)
+      const valueSpan = e.target.nextElementSibling
+      socket.emit('vote king', photoID)
+      console.log(valueSpan)
     } else if (hasClass(e.target, 'toy')) {
       
       const photoID = e.target.getAttribute('aria-label')
-      socket.emit('vote toy', photoID, userID)
+      const valueSpan = e.target.nextElementSibling
+      socket.emit('vote toy', photoID)
         // Do your other thing
     }
   }, false);
-  //Update Map
-  socket.on("update map", function (geoTag, artist, style, url) {
-    console.log("adding graffiti to map on location " + geoTag);
-    var geojson = {
-      type: "FeatureCollection",
-      features: [
-        {
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: geoTag,
-          },
-          properties: {
-            title: artist,
-            description: style,
-            url: url
-          },
-        },
-      ],
-    };
-    geojson.features.forEach(function (marker) {
-      var el = document.createElement("div")
-      el.className = "marker"
+  // Update Ranks
+  socket.on('update king', function(photoID, value){
+    console.log('updating')
+    const voteButton = document.querySelector('.king')
+    if(voteButton.getAttribute('aria-label') === photoID){
+      console.log(voteButton)
+      voteButton.nextElementSibling.innerText = value
+    }
+  })
 
-      new mapboxgl.Marker(el)
-      .setLngLat(marker.geometry.coordinates)
-      .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-      .setHTML(`<img src="${marker.properties.url}" alt"${marker.properties.description} by ${marker.properties.title} ">
-                <h3>${marker.properties.title}</h3>
-                <p> ${marker.properties.description}</p>
-                `))
-      .addTo(map)
-    });
+  socket.on('update toy', function(photoID, value){
+    console.log('updating')
+    const voteButton = document.querySelector('.toy')
+    if(voteButton.getAttribute('aria-label') === photoID){
+      console.log(voteButton)
+      voteButton.nextElementSibling.innerText = value
+    }
   })
-  socket.on('update list', function(geoTag, artist, style, url, id){
-    const link = listing.appendChild(document.createElement('a'));
-    link.href = '#';
-    link.classList.add('title','link')
-    link.id = "link-" + id;
-    link.innerHTML = artist;
-    link.data = geoTag
-    const details = listing.appendChild(document.createElement('p'));
-    details.innerHTML = style;
-    const img = listing.appendChild(document.createElement('img'))
-    img.src = url
-    img.className = 'img-thumb'
-  })
+
 })();

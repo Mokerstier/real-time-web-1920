@@ -25,7 +25,7 @@ function routes(){
 			res.render("pages/home.ejs", {
 				title: "Instagraff",
 				message: '',
-				graffitis: res.locals.results
+				graffitis: res.locals.results,
 			});
 		})
         // POST routes

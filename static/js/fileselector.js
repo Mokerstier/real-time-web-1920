@@ -28,7 +28,6 @@ function handleFiles() {
       img.classList.add("obj");
       img.file = fileElem.files
       img.src = URL.createObjectURL(this.files[i]);
-      img.height = 60;
       img.onload = function() {
         
         URL.revokeObjectURL(this.src);

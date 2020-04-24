@@ -128,7 +128,7 @@ async function getFlickrURL(req, res, photoId, user_id) {
             }
           );
           console.log('returning this URL: '+photoURL)
-            res.send({url:photoURL, id:photo_id})
+            res.send({url:photoURL, id:photoId})
             return(photoURL)
         } catch (error) {
           console.log("Error: " + error.message);

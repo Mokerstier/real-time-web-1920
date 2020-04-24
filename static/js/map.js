@@ -40,6 +40,8 @@ map.on("load", () => {
             description: element.style,
             ref: element.ref,
             id: element._id,
+            king: element.king.length,
+            toy : element.toy.length
           },
         },
       ],
@@ -48,16 +50,18 @@ map.on("load", () => {
     element.features.forEach(function (marker) {
       var el = document.createElement("div");
       el.className = "marker";
-
+      const graff = marker.properties
       new mapboxgl.Marker(el)
         .setLngLat(marker.geometry.coordinates)
         .setPopup(
           new mapboxgl.Popup({ offset: 25 }) // add popups
-            .setHTML(`<img src="${marker.properties.ref}" alt="">
-                <h3>${marker.properties.title}</h3>
-                <p> ${marker.properties.description}</p>
-                <button aria-label="${marker.properties.id}" class="king">King</button>
-                <button aria-label="${marker.properties.id}" class="toy">Toy</button>
+            .setHTML(`<img src="${graff.ref}" alt="">
+                <h3>${graff.title}</h3>
+                <p> ${graff.description}</p>
+                <button aria-label="${graff.id}" class="king">King</button>
+                <span class="king-value">${graff.king}</span>
+                <button aria-label="${graff.id}" class="toy">Toy</button>
+                <span class="toy-value">${graff.toy}</span>
                 `)
         )
         .addTo(map);
