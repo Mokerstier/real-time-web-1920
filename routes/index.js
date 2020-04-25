@@ -9,6 +9,7 @@ function routes(){
 	const {
 		onUpload
 	} = require("../controllers/upload")
+	const renderData = require('../controllers/render/renderdata')
 	const graffitis = require('../controllers/graffitis')
     const exRoutes = require("express").Router();
 	const bodyParser = require("body-parser");
@@ -27,6 +28,9 @@ function routes(){
 				message: '',
 				graffitis: res.locals.results,
 			});
+		})
+		.get('/livedata', graffitis.getGraffs, renderData.onRenderData ,(req, res) => {
+			res.send({results})
 		})
         // POST routes
         .post("/login", onLoginPost)

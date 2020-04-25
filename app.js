@@ -9,6 +9,7 @@ const urlencodedParser = bodyParser.urlencoded({
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
 
+const { userSchema } = require('./models/user')
 const vote = require("./controllers/vote");
 // const {onUpload} = require('./controllers/upload')
 
@@ -107,17 +108,27 @@ io
 
 io.on('connection', function(socket){
   let userID = "";
+  const liked = []
   if (socket.handshake) {
     console.log(socket.handshake.session);
     userID =
       socket.handshake.session.passport &&
       socket.handshake.session.passport.user;
+      
   }
+  if (userID !== undefined){
+    userSchema.findById(userID, (err, results) =>{
+      if (err) throw console.error(err)
+      liked.push(results.liked)
+      console.log(liked)
+    })
+  }
+  
   console.log(`⚡︎ user connected as ${userID} ⚡︎`);
 
   socket.on("image upload", function (geoTag, artist, style, url, photoID) {
     console.log("update map");
-    io.emit("update map", geoTag, artist, style, url);
+    io.emit("update map", geoTag, artist, style, url, photoID);
     io.emit("update list", geoTag, artist, style, url, photoID);
   });
 

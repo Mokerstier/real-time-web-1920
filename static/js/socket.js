@@ -54,7 +54,7 @@ function hasClass(elem, className) {
   });
 
     //Update Map
-    socket.on("update map", function (geoTag, artist, style, url) {
+    socket.on("update map", function (geoTag, artist, style, url, id) {
       console.log("adding graffiti to map on location " + geoTag);
       var geojson = {
         type: "FeatureCollection",
@@ -68,7 +68,8 @@ function hasClass(elem, className) {
             properties: {
               title: artist,
               description: style,
-              url: url
+              url: url,
+              id: id
             },
           },
         ],
@@ -109,18 +110,14 @@ function hasClass(elem, className) {
 
   // Vote on images
   document.addEventListener('click', function (e) {
+    
     if (hasClass(e.target, 'king')) {
       console.log(e.target)
       const photoID = e.target.getAttribute('aria-label')
-      const valueSpan = e.target.nextElementSibling
       socket.emit('vote king', photoID)
-      console.log(valueSpan)
     } else if (hasClass(e.target, 'toy')) {
-      
       const photoID = e.target.getAttribute('aria-label')
-      const valueSpan = e.target.nextElementSibling
       socket.emit('vote toy', photoID)
-        // Do your other thing
     }
   }, false);
   // Update Ranks
