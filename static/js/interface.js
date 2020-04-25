@@ -1,0 +1,1 @@
+const showList = document.querySelector('#sidebar-check')

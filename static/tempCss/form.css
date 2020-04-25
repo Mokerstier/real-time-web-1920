@@ -1,0 +1,55 @@
+form {
+  background-color: rgba(105, 105, 105, 0.65);
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 4px;
+  margin: auto;
+  width: var(--container-width);
+}
+.form_upload {
+  display: flex;
+  flex-wrap: wrap;
+}
+.form_upload #show-form {
+  position: absolute;
+}
+.form_login legend {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: auto;
+}
+.form_login label {
+  margin: auto;
+}
+.form_login input {
+  display: block;
+  margin: auto;
+}
+fieldset {
+  border: none;
+  display: flex;
+}
+.form_field {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+.form_button {
+  margin: 1rem auto;
+}
+#fileList ul {
+  list-style: none;
+  padding: 0;
+}
+#fileList ul .obj {
+  width: 100%;
+  object-fit: contain;
+}
+#fileList ul li {
+  justify-content: space-around;
+  display: flex;
+  flex-direction: column;
+}
+#fileList ul span {
+  display: block;
+}

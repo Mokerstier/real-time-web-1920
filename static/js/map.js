@@ -16,7 +16,7 @@ var map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/mapbox/streets-v11", // replace this with your style URL
   center: [4.903681, 52.356654],
-  zoom: 10.7,
+  zoom: 8.7,
   maxBounds: bounds,
 });
 
@@ -112,7 +112,7 @@ const geoMarker = new mapboxgl.Marker({
 function flyToGraff(currentFeature) {
   map.flyTo({
     center: currentFeature,
-    zoom: 15,
+    zoom: 10,
   });
 }
 
