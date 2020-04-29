@@ -1,0 +1,40 @@
+.message-container{
+    background-color: #fff;
+    border: 1px solid var(--blue-dark);
+    border-radius: 4px;
+    display: none;
+    padding: 1.5rem;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    button{
+        border: none;
+        padding: .2rem;
+        position: absolute;
+        right: .5rem;
+        top: .5rem;
+        background: -webkit-linear-gradient(var(--blue-dark), var(--blue-light));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        &:hover, &:active{
+            background: var(--blue-light);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+    }
+    
+    #message{
+        background: -webkit-linear-gradient(var(--blue-dark), var(--blue-light));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+}
+.show-msg{
+    display: block;
+}

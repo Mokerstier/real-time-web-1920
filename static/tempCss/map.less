@@ -1,0 +1,196 @@
+.map_container{
+  display: flex;
+  width: var(--container-width);
+  margin: auto ;
+  height: 600px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 33.3333%;
+  overflow: hidden;
+  border-right: 1px solid rgba(0, 0, 0, 0.25);
+}
+.map {
+  border-left: 1px solid #fff;
+  height: 100%;
+  width: 66.6666%;
+
+}
+#sidebar-check{
+  opacity: 0;
+  transform: translateX(-10rem);
+}
+@media only screen and (max-width: 975px) {
+  #sidebar-check{
+    opacity: 1;
+    z-index: 1;
+    
+  }
+  .sidebar{
+    transform: translateX(-1.3rem);
+    transition: width 1.2s ease-out;
+    overflow: auto;
+    width: 0%;
+    z-index: 1;
+  }
+  #sidebar-check::before{
+    transition: all  1.15s  ease-out;
+    content:"Show list";
+    opacity: 1;
+    color: #fff;
+    border: 1px solid var(--grey-light);
+    border-radius: 4px;
+    transform: rotate(90deg) translateX(3.2rem) translateY(-6rem);
+    display: block;
+    width: 8rem;
+    background-color: var(--grey-dark) ;
+    padding: .5rem;
+    
+    position: absolute;
+    // left: -.9rem;
+    // top: .9rem;
+    z-index: 1;
+  }
+
+  #sidebar-check:checked::before{
+    content: "Hide list";
+    // left: 177px;
+    // top: .9rem;
+    transform:rotate(90deg) translateY(-17.2rem) translateX(3.2rem);
+    z-index: 1;
+  }
+  #sidebar-check:checked ~ .sidebar{
+    transition: width 1.2s ease-out;
+    transform: translateX(-11%);
+    width: 177px;
+    z-index: 1;
+  }
+
+  .map{
+    left: 0;
+    width: 100%;
+    position: absolute;
+ 
+  }
+}
+* {
+ 
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.heading {
+  background-color: var(--grey-dark);
+  border-bottom: 1px solid #eee;
+  height: 60px;
+  line-height: 60px;
+  padding: 0 10px;
+  // animation: moveBackground ease infinite 5s alternate-reverse;
+  h1{
+    color: #fff;
+    font-size: 22px;
+    margin: 0;
+    font-weight: 400;
+    line-height: 20px;
+    padding: 20px 2px;
+  }
+}
+
+.listings {
+  background-color: #fff;
+  height: 100%;
+  overflow: auto;
+  padding-bottom: 60px;
+  p{
+    margin: 0;
+  }
+  a{
+    text-decoration: none;
+  }
+}
+
+.listings .item {
+  display: block;
+  border-bottom: 1px solid #eee;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.listings .item:last-child { border-bottom: none; }
+
+.listings .item .title {
+  display: block;
+  color: var(--blue-dark);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.listings .item .title small { font-weight: 400; }
+
+.listings .item.active .title,
+.listings .item .title:hover { color: var(--blue-light); }
+
+.listings .item.active {
+  background-color: #f8f8f8;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 3px;
+  border-left: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-track {
+  background: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--blue-dark);
+  border-radius: 0;
+}
+
+.clearfix { display: block; }
+
+.clearfix::after {
+  content: '.';
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.marker {
+  background-image: url("/ui/icons/instagraff-marker.png");
+  background-size: contain;
+  background-position: top;
+  background-repeat: no-repeat;
+  width: 35px;
+  height: 90px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.marker:hover, marker:active {
+  background-image: url("/ui/icons/instagraff-marker-active.png");
+}
+.mapboxgl-popup {
+  max-width: 200px;
+}
+
+.mapboxgl-popup-content {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+  img{
+    object-fit: cover;
+    object-position: center;
+    width: 200px;
+    max-height: 100px;
+  }
+}
+
+@keyframes moveBackground{
+  to{
+    background-position:0 300px 0;
+  }
+}
