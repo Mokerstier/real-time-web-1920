@@ -24,7 +24,7 @@ dropMarker.addEventListener("click", function (e) {
   e.preventDefault();
   createMarker();
 });
-const url = "http://localhost:7070/livedata";
+const url = "/livedata";
 map.on("load", async () => {
   
   let response = await fetch(url);
@@ -81,7 +81,7 @@ function buildLocationList(data) {
     link.classList.add("title", "link");
     link.id = "link-" + prop.id;
     link.innerHTML = prop.title;
-    link.data = graff.geometry.coordinates;
+    link.data = graff;
     const details = listing.appendChild(document.createElement("p"));
     details.innerHTML = prop.description;
   });
@@ -93,8 +93,8 @@ document.addEventListener(
       e.preventDefault();
       let clickedListing = e.target.data;
       console.log(clickedListing);
-      flyToGraff(clickedListing);
-
+      flyToGraff(clickedListing.geometry.coordinates);
+      createPopUp(clickedListing)
       let activeItem = document.getElementsByClassName("active");
       if (activeItem[0]) {
         activeItem[0].classList.remove("active");
@@ -115,6 +115,24 @@ function flyToGraff(currentFeature) {
     zoom: 10,
   });
 }
+function createPopUp(currentFeature) {
+  let popUps = document.getElementsByClassName('mapboxgl-popup');
+  /** Check if there is already a popup on the map and if so, remove it */
+  if (popUps[0]) popUps[0].remove();
+  const graff = currentFeature.properties;
+  let popup = new mapboxgl.Popup({ offset: 25, closeOnClick: false })
+    .setLngLat(currentFeature.geometry.coordinates)
+    .setHTML(`<img src="${graff.ref}" alt="">
+                <h3>${graff.title}</h3>
+                <p> ${graff.description}</p>
+                <button aria-label="${graff.id}" class="king">King</button>
+                <span class="king-value">${graff.king}</span>
+                <button aria-label="${graff.id}" class="toy">Toy</button>
+                <span class="toy-value">${graff.toy}</span>
+                `)
+    .addTo(map);
+}
+
 
 function createMarker() {
   coords = map.getCenter();

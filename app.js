@@ -84,13 +84,7 @@ app
   .set("view engine", "ejs")
   .set("trust proxy", 1); // used because not communicating over HTTPS and want to set cookie
 
-// const config = {
-//   key: "connect.sid",
-//   secret: process.env.SESSION_SECRET,
-//   store: sessionStore,
-//   passport: passport,
-//   cookieParser: cookieParser,
-// };
+
 module.exports = { app }
 // io.use(passportSocketIo.authorize(config));
 const IOsession = session({
@@ -136,7 +130,7 @@ io.on('connection', function(socket){
   socket.on("vote king", async function (photoID) {
     // write data to DB
     if (userID === undefined) {
-      console.log("not signed in");
+      socket.emit('feedback message', 0)
     } else {
       value = await vote.king(photoID, userID);
       console.log(value);
@@ -145,7 +139,7 @@ io.on('connection', function(socket){
   });
   socket.on("vote toy", async function (photoID) {
     if (userID === undefined) {
-      console.log("not signed in");
+      socket.emit('feedback message', 0)
     } else {
       // write data to DB
       value = await vote.toy(photoID, userID);

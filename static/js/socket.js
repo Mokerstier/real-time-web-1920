@@ -1,4 +1,11 @@
 const upload = document.querySelector("#upload");
+const msgContainer = document.querySelector('.message-container')
+const message = document.getElementById('message')
+
+const feedBackMsg = [
+  'Action unavailable: You are not signed in!',
+]
+
 function hasClass(elem, className) {
   return elem.classList.contains(className);
 }
@@ -138,5 +145,17 @@ function hasClass(elem, className) {
       voteButton.nextElementSibling.innerText = value
     }
   })
-
+  socket.on('feedback message', function(msg){
+    const linkLogin = document.getElementById('login-link')
+    const linkReg = document.getElementById('register-link')
+    if(msg === 0){
+      linkLogin.href = '/login'
+      linkLogin.innerText = 'Login'
+      
+      linkReg.href = '/register'
+      linkReg.innerText = 'Register'
+    }
+    msgContainer.classList.add('show-msg')
+    message.innerText = feedBackMsg[msg]
+  })
 })();
