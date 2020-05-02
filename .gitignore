@@ -3,3 +3,4 @@ data
 public
 .env
 node_modules
+.vs
