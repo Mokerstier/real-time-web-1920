@@ -40,6 +40,7 @@ map.on("load", async () => {
       el.className = "marker";
       
       const graff = marker.properties;
+      console.log(graff)
       marker.options= {anchor:'bottom'}
       new mapboxgl.Marker(el)
         .setLngLat(marker.geometry.coordinates)
@@ -76,14 +77,23 @@ function buildLocationList(data) {
     listing.className = "item";
 
     /* Add the link to the individual listing created above. */
-    const link = listing.appendChild(document.createElement("a"));
+    
+    const thumbNail = document.createElement('img')
+    const textContainer = listing.appendChild(document.createElement('div'))
+    const link = textContainer.appendChild(document.createElement("a"));
+    textContainer.className = 'text_container'
+    thumbNail.src = prop.ref
+    thumbNail.alt = `${prop.description} by artist: ${prop.title}`
+    thumbNail.className = 'thumbList'
     link.href = "#";
     link.classList.add("title", "link");
     link.id = "link-" + prop.id;
     link.innerHTML = prop.title;
     link.data = graff;
-    const details = listing.appendChild(document.createElement("p"));
+    
+    const details = textContainer.appendChild(document.createElement("p"));
     details.innerHTML = prop.description;
+    listing.appendChild(thumbNail)
   });
 }
 document.addEventListener(
