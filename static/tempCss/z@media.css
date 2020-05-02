@@ -19,6 +19,10 @@
   }
 }
 @media only screen and (max-width: 390px) {
+  body{
+    max-height: 100vh;
+    overflow: hidden;
+  }
   header nav {
     background-image: none;
   }
