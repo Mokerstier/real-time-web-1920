@@ -10,7 +10,7 @@ async function artist(req, res){
         console.log(user.following)
         
         user.save()
-
+        res.send({message: `${req.params.artist} added to your feed!`})
         
     })
 }

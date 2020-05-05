@@ -57,12 +57,12 @@ function createElement(tag, { options, children }) {
     const style = [];
     const checkboxes = document.querySelectorAll("input[type=checkbox]");
 
-    checkboxes.forEach((checkbox) => {
-      if (checkbox.checked === true) {
-        console.log(checkbox);
-        style.push(checkbox.value);
-      }
-    });
+    // checkboxes.forEach((checkbox) => {
+    //   if (checkbox.checked === true) {
+    //     console.log(checkbox);
+    //     style.push(checkbox.id);
+    //   }
+    // });
 
     const geoLat = document.querySelector("#lat").value;
     const geoLon = document.querySelector("#lon").value;
@@ -80,8 +80,8 @@ function createElement(tag, { options, children }) {
         return response.json();
       })
       .then((data) => {
-        console.log("this is parsed response " + data.message);
-        photoURL = data.message;
+        console.log("this is parsed response " + data.url);
+        photoURL = data.url;
         id = data.id;
         socket.emit("image upload", geoTag, artist, style, photoURL, id);
         return data;
@@ -128,11 +128,11 @@ function createElement(tag, { options, children }) {
             .setHTML(`<img src="${graff.url}" alt"${graff.description} by ${graff.title} ">
                   <h3>${graff.title}</h3>
                   <p> ${graff.description}</p>
-                  <a href="/follow/${graff.title}">#follow artist</a>
+                  <a class="follow-link" href="/follow/${graff.title}">#follow artist</a>
                   <button aria-label="${graff.id}" class="king">King</button>
-                  <span class="king-value">${graff.king}</span>
+                  <span class="king-value">0</span>
                   <button aria-label="${graff.id}" class="toy">Toy</button>
-                  <span class="toy-value">${graff.toy}</span>
+                  <span class="toy-value">0</span>
                   `)
         )
         .addTo(map);

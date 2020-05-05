@@ -35,10 +35,8 @@ function routes(){
 		.get('/livedata', graffitis.getGraffs, renderData.onRenderData ,(req, res) => {
 			res.send({results})
 		})
-		.get('/follow/:artist', isLoggedIn, follow.artist, (req, res)=>{
-			console.log(req.params.artist)
-			console.log(req.user)
-		})
+		.get('/follow/:artist', isLoggedIn, follow.artist)
+
         // POST routes
         .post("/login", onLoginPost)
 		.post("/register", onLoginPost)

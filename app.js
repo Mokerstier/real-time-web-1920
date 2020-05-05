@@ -130,7 +130,7 @@ io.on("connection", async function (socket) {
   console.log(`⚡︎ user connected as ${userID} ⚡︎`);
 
   socket.on("image upload", function (geoTag, artist, style, url, photoID) {
-    console.log("update map");
+    console.log("update map with url: "+url);
     io.emit("update map", geoTag, artist, style, url, photoID);
     io.emit("update list", geoTag, artist, style, url, photoID);
     io.emit("update feed", geoTag, artist, style, url, photoID);
