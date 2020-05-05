@@ -11,6 +11,7 @@ function routes(){
 	} = require("../controllers/upload")
 	const renderData = require('../controllers/render/renderdata')
 	const graffitis = require('../controllers/graffitis')
+	const follow = require('../controllers/follow')
     const exRoutes = require("express").Router();
 	const bodyParser = require("body-parser");
 	const urlencodedParser = bodyParser.urlencoded({ extended: true });
@@ -23,14 +24,20 @@ function routes(){
         .get("/login", onLoginGet)
         .get("/register", onRegister)
         .get("/", graffitis.getGraffs, (req, res) => {
+			console.log(req.user)
 			res.render("pages/home.ejs", {
 				title: "Instagraff",
 				message: '',
 				graffitis: res.locals.results,
+				user: req.user,
 			});
 		})
 		.get('/livedata', graffitis.getGraffs, renderData.onRenderData ,(req, res) => {
 			res.send({results})
+		})
+		.get('/follow/:artist', isLoggedIn, follow.artist, (req, res)=>{
+			console.log(req.params.artist)
+			console.log(req.user)
 		})
         // POST routes
         .post("/login", onLoginPost)

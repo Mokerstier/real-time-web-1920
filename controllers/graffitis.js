@@ -8,4 +8,5 @@ function getGraffs(req, res, next){
         next(null, results)
     })
 }
+
 module.exports = { getGraffs }

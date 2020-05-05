@@ -3,7 +3,9 @@ let Lon = document.querySelector("#lon");
 const dropMarker = document.querySelector("#drop-marker");
 const listings = document.getElementById("listings");
 // let dataJSON = JSON.stringify(results)
-
+function hasClass(elem, className) {
+  return elem.classList.contains(className);
+}
 mapboxgl.accessToken =
   "pk.eyJ1IjoibW9rZXJzdGllciIsImEiOiJjazFxbm5za2sxMWE2M2NwZGNncGFzazZlIn0.0oOI9FSQB1saUbuCqq9nCw"; // replace this with your access token
 
@@ -40,7 +42,7 @@ map.on("load", async () => {
       el.className = "marker";
       
       const graff = marker.properties;
-      console.log(graff)
+      
       marker.options= {anchor:'bottom'}
       new mapboxgl.Marker(el)
         .setLngLat(marker.geometry.coordinates)
@@ -49,6 +51,7 @@ map.on("load", async () => {
             .setHTML(`<img src="${graff.ref}" alt="">
                 <h3>${graff.title}</h3>
                 <p> ${graff.description}</p>
+                <a href="/follow/${graff.title}">#follow artist</a>
                 <button aria-label="${graff.id}" class="king">King</button>
                 <span class="king-value">${graff.king}</span>
                 <button aria-label="${graff.id}" class="toy">Toy</button>

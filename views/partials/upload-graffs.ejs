@@ -1,48 +1,63 @@
 <section class="form_upload">
-  
   <input type="checkbox" name="" id="show-form" />
   <label for="show-form"></label>
-  <form id="upload" enctype="application/x-www-form-urlencoded" action="/upload" method="post">
-    <fieldset aria-required="true">
-      <label for="artist">Artist name:
-        <input required name="artist" type="text" id="artist" />
-      </label>
-    </fieldset>
-    <fieldset aria-required="true">
-      <legend>What type of graffiti?</legend>
-      <label for="tag"> 
-        Tag
-        <input type="checkbox" name="style" id="tag" value="tag" />
-      </label>
-      <label for="piece">
-        Piece
-        <input type="checkbox" name="style" id="piece" value="piece" /> 
-      </label>
-      <label for="throw">
-        Throw-up
-        <input type="checkbox" name="style" id="throw" value="throw" />
-      </label>
-    </fieldset>
-    <fieldset aria-required="true">
-      <legend>Where did you spot this graff?</legend>
-      <a href="#" id="drop-marker">Drop a marker to point the location</a>
-      <label for="lat">Latitude
-        <input required type="text" name="lat" id="lat" />
-      </label>
-      <label for="lon">Longtitude
-        <input required type="text" name="lon" id="lon" />
-      </label>
-    </fieldset>
-    <fieldset>
-      <input required type="file" id="fileElem" name="file" multiple accept="image/*" style="display: none;" />
-      <a href="#" id="fileSelect">Select some files</a>
-      <div id="fileList">
-        <p>No files selected!</p>
-      </div>
-    </fieldset>
-    <fieldset>
-      <button type="submit">Upload</button>
-    </fieldset>
+  <form
+    id="upload"
     
+    enctype="application/x-www-form-urlencoded"
+    action="/upload"
+    method="post"
+  >
+    <div class="container x proximity-scroll-snapping">
+      <fieldset aria-required="true">
+        <label for="artist">Artist name: </label>
+        <input required name="artist" type="text" id="artist" />
+      </fieldset>
+      <fieldset aria-required="true">
+        <legend>What type of graffiti?</legend>
+        <label for="tag">
+          Tag
+          <input type="checkbox" name="style" id="tag" value="tag" />
+        </label>
+        <label for="piece">
+          Piece
+          <input type="checkbox" name="style" id="piece" value="piece" />
+        </label>
+        <label for="throw">
+          Throw-up
+          <input type="checkbox" name="style" id="throw" value="throw" />
+        </label>
+      </fieldset>
+      <fieldset aria-required="true">
+        <legend>Where did you spot this graff?</legend>
+        <a href="#" id="drop-marker">Drop a marker to point the location</a>
+        <label for="lat"
+          >Latitude
+          <input required type="text" pattern="[0-9.]+" name="lat" id="lat" />
+        </label>
+        <label for="lon"
+          >Longtitude
+          <input required type="text" pattern="[0-9.]+" name="lon" id="lon" />
+        </label>
+      </fieldset>
+      <fieldset>
+        <input
+          required
+          type="file"
+          id="fileElem"
+          name="file"
+          multiple
+          accept="image/*"
+          style="display: none;"
+        />
+        <a href="#" id="fileSelect">Select some files</a>
+        <div id="fileList">
+          <p>No files selected!</p>
+        </div>
+      </fieldset>
+      <fieldset>
+        <button type="submit">Upload</button>
+      </fieldset>
+    </div>
   </form>
 </section>

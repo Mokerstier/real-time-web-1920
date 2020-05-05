@@ -1,161 +1,286 @@
 const upload = document.querySelector("#upload");
-const msgContainer = document.querySelector('.message-container')
-const message = document.getElementById('message')
+const msgContainer = document.querySelector(".message-container");
+const message = document.getElementById("message");
+const feed = document.getElementById("feed");
+const feedBackMsg = ["Action unavailable: You are not signed in!"];
+const listing = document.getElementById('listings')
 
-const feedBackMsg = [
-  'Action unavailable: You are not signed in!',
-]
-
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    console.log("Geolocation is not supported by this browser.")
+  }
+}
+function showPosition(position) {
+  console.log(position.coords)
+ console.log("Latitude: " + position.coords.latitude + 
+  "Longitude: " + position.coords.longitude)
+}
 function hasClass(elem, className) {
   return elem.classList.contains(className);
 }
+function createElement(tag, { options, children }) {
+  const element = document.createElement(tag);
+
+  if (options.classNames) {
+    options.classNames.forEach((className) => {
+      element.classList.add(className);
+    });
+  }
+  if (options.text) {
+    element.innerText = options.text;
+  }
+  if (options.href) {
+    element.setAttribute("href", options.href);
+  }
+  if (options.src) {
+    element.setAttribute("src", options.src);
+  }
+  if (children) {
+    children.forEach((child) => {
+      element.appendChild(child);
+    });
+  }
+  return element;
+}
+
 (function () {
   const socket = io();
   console.log("hello");
+  getLocation()
   upload.addEventListener("submit", async function (e) {
     e.preventDefault();
-    const style = []
-    const checkboxes = document.querySelectorAll('input[type=checkbox]')
-    console.log(checkboxes)
-    checkboxes.forEach(checkbox =>{
-      if(checkbox.checked === true){
-        console.log(checkbox)
-        style.push(checkbox.value)
+    let button = upload.getElementsByTagName("button")[0];
+
+    button.setAttribute("disabled", "disabled");
+    const style = [];
+    const checkboxes = document.querySelectorAll("input[type=checkbox]");
+
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked === true) {
+        console.log(checkbox);
+        style.push(checkbox.value);
       }
-    })
-    
-    console.log(style)
+    });
+
     const geoLat = document.querySelector("#lat").value;
     const geoLon = document.querySelector("#lon").value;
-    const geoTag = [ geoLat, geoLon];
-    const artist = document.querySelector('#artist').value
+    const geoTag = [geoLat, geoLon];
+    const artist = document.querySelector("#artist").value;
+    const formData = new FormData(uploadForm);
 
-    
-      const formData = new FormData(uploadForm)
-      
-      fetch('/upload',{
-          method: 'PUT', 
-          body: formData,
-          
-      })
+    fetch("/upload", {
+      method: "PUT",
+      body: formData,
+    })
       .then((response) => {
-          console.log(response);
-          
-          return response.json();
+        console.log(response);
+
+        return response.json();
       })
       .then((data) => {
-          console.log('this is parsed response '+data.message);
-          url = data.message
-          id = data.id
-          socket.emit("image upload", geoTag, artist, style, url, id)
-          return data
+        console.log("this is parsed response " + data.message);
+        photoURL = data.message;
+        id = data.id;
+        socket.emit("image upload", geoTag, artist, style, photoURL, id);
+        return data;
       })
       .catch((error) => {
-          console.error('Error:', error);
+        console.error("Error:", error);
       })
-      .finally( data =>{
+      .finally((data) => {
+        button.removeAttribute("disabled");
         upload.reset();
-        return false
-      })
-
+        return false;
+      });
   });
 
-    //Update Map
-    socket.on("update map", function (geoTag, artist, style, url, id) {
-      console.log("adding graffiti to map on location " + geoTag);
-      var geojson = {
-        type: "FeatureCollection",
-        features: [
-          {
-            type: "Feature",
-            geometry: {
-              type: "Point",
-              coordinates: geoTag,
-            },
-            properties: {
-              title: artist,
-              description: style,
-              url: url,
-              id: id
-            },
+  //Update Map
+  socket.on("update map", function (geoTag, artist, style, photoURL, id) {
+    console.log("adding graffiti to map on location " + geoTag);
+    var geojson = {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: geoTag,
           },
-        ],
-      };
-      geojson.features.forEach(function (marker) {
-        var el = document.createElement("div")
-        el.className = "marker"
-  
-        new mapboxgl.Marker(el)
+          properties: {
+            title: artist,
+            description: style,
+            url: photoURL,
+            id: id,
+          },
+        },
+      ],
+    };
+    geojson.features.forEach(function (marker) {
+      var el = document.createElement("div");
+      el.className = "marker";
+      const graff = marker.properties
+      new mapboxgl.Marker(el)
         .setLngLat(marker.geometry.coordinates)
-        .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-        .setHTML(`<img src="${marker.properties.url}" alt"${marker.properties.description} by ${marker.properties.title} ">
-                  <h3>${marker.properties.title}</h3>
-                  <p> ${marker.properties.description}</p>
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 }) // add popups
+            .setHTML(`<img src="${graff.url}" alt"${graff.description} by ${graff.title} ">
+                  <h3>${graff.title}</h3>
+                  <p> ${graff.description}</p>
+                  <a href="/follow/${graff.title}">#follow artist</a>
                   <button aria-label="${graff.id}" class="king">King</button>
                   <span class="king-value">${graff.king}</span>
                   <button aria-label="${graff.id}" class="toy">Toy</button>
                   <span class="toy-value">${graff.toy}</span>
-                  `))
-        .addTo(map)
-      });
-    })
-    // Update listing
-    socket.on('update list', function(geoTag, artist, style, url, id){
-      const link = listing.appendChild(document.createElement('a'));
-      link.href = '#';
-      link.classList.add('title','link')
-      link.id = "link-" + id;
-      link.innerHTML = artist;
-      link.data = geoTag
-      const details = listing.appendChild(document.createElement('p'));
-      details.innerHTML = style;
-      const img = listing.appendChild(document.createElement('img'))
-      img.src = url
-      img.className = 'img-thumb'
-    })
-  
+                  `)
+        )
+        .addTo(map);
+    });
+  });
+  // Update listing
+  socket.on("update list", function (geoTag, artist, style, photoURL, id) {
+    const link = listing.appendChild(document.createElement("a"));
+    link.href = "#";
+    link.classList.add("title", "link");
+    link.id = "link-" + id;
+    link.innerHTML = artist;
+    link.data = geoTag;
+    const details = listing.appendChild(document.createElement("p"));
+    details.innerHTML = style;
+    const img = listing.appendChild(document.createElement("img"));
+    img.src = photoURL;
+    img.className = "img-thumb";
+  });
 
-  // Vote on images
-  document.addEventListener('click', function (e) {
+  //Update Feed
+  socket.on("update feed", function (geoTag, artist, style, photoURL, photoID) {
     
-    if (hasClass(e.target, 'king')) {
-      console.log(e.target)
-      const photoID = e.target.getAttribute('aria-label')
-      socket.emit('vote king', photoID)
-    } else if (hasClass(e.target, 'toy')) {
-      const photoID = e.target.getAttribute('aria-label')
-      socket.emit('vote toy', photoID)
-    }
-  }, false);
-  // Update Ranks
-  socket.on('update king', function(photoID, value){
-    console.log('updating')
-    const voteButton = document.querySelector('.king')
-    if(voteButton.getAttribute('aria-label') === photoID){
-      console.log(voteButton)
-      voteButton.nextElementSibling.innerText = value
-    }
+    const title = createElement("h3", {
+      options: {
+        text: artist,
+        classNames: ["feed_image"],
+      },
+    });
+    const desc = createElement('p',{
+      options:{
+        text: style,
+        classNames:['feed_style']
+      }
+    })
+    const cover = createElement("img", {
+      options: {
+        src: photoURL,
+        classNames: ["feed_image"],
+      },
+    });
+    const link = createElement("a", {
+      options:{
+        text: '#follow artist',
+        href: `/follow/${artist}`
+      },
+      children:[title, desc, cover]
+    })
+    const card = createElement("article", {
+      options: {
+        classNames: ["card_body"],
+      },
+      children: [link ],
+    });
+    feed.appendChild(card)
+  });
+  // Vote on images
+  document.addEventListener(
+    "click",
+    function (e) {
+      if (hasClass(e.target, "king")) {
+        console.log(e.target);
+        const photoID = e.target.getAttribute("aria-label");
+        socket.emit("vote king", photoID);
+      } else if (hasClass(e.target, "toy")) {
+        const photoID = e.target.getAttribute("aria-label");
+        socket.emit("vote toy", photoID);
+      }
+    },
+    false
+  );
+  // my likes
+  socket.on('my likes', function(myLikes){
+    console.log(myLikes)
+  })
+  // my following
+  socket.on('my following', function(list){
+    const personal = document.querySelector('.personal-feed')
+    personal.remove()
+    list.forEach(element => {
+      const title = createElement("h3", {
+        options: {
+          text: element.artist,
+          classNames: ["feed_image"],
+        },
+      });
+      const desc = createElement('p',{
+        options:{
+          text: element.style,
+          classNames:['feed_style']
+        }
+      })
+      const cover = createElement("img", {
+        options: {
+          src: element.ref,
+          classNames: ["feed_image"],
+        },
+      });
+      const link = createElement("a", {
+        options:{
+          text: '#unfollow artist',
+          href: `/unfollow/${element.artist}`
+        },
+        children:[title, desc, cover]
+      })
+      const card = createElement("article", {
+        options: {
+          classNames: ["card_body"],
+        },
+        children: [link ],
+      });
+      feed.appendChild(card)
+    });
+
+    
+
   })
 
-  socket.on('update toy', function(photoID, value){
-    console.log('updating')
-    const voteButton = document.querySelector('.toy')
-    if(voteButton.getAttribute('aria-label') === photoID){
-      console.log(voteButton)
-      voteButton.nextElementSibling.innerText = value
+  // Update Ranks
+  socket.on("update king", function (photoID, value) {
+    console.log("updating");
+    const voteButton = document.querySelector(".king");
+    if (voteButton.getAttribute("aria-label") === photoID) {
+      console.log(voteButton);
+      voteButton.nextElementSibling.innerText = value;
     }
-  })
-  socket.on('feedback message', function(msg){
-    const linkLogin = document.getElementById('login-link')
-    const linkReg = document.getElementById('register-link')
-    if(msg === 0){
-      linkLogin.href = '/login'
-      linkLogin.innerText = 'Login'
-      
-      linkReg.href = '/register'
-      linkReg.innerText = 'Register'
+  });
+
+  socket.on("update toy", function (photoID, value) {
+    console.log("updating");
+    const voteButton = document.querySelector(".toy");
+    if (voteButton.getAttribute("aria-label") === photoID) {
+      console.log(voteButton);
+      voteButton.nextElementSibling.innerText = value;
     }
-    msgContainer.classList.add('show-msg')
-    message.innerText = feedBackMsg[msg]
-  })
+  });
+  //Feedback msg
+  socket.on("feedback message", function (msg) {
+    const linkLogin = document.getElementById("login-link");
+    const linkReg = document.getElementById("register-link");
+    if (msg === 0) {
+      linkLogin.href = "/login";
+      linkLogin.innerText = "Login";
+
+      linkReg.href = "/register";
+      linkReg.innerText = "Register";
+    }
+    msgContainer.classList.add("show-msg");
+    message.innerText = feedBackMsg[msg];
+  });
 })();

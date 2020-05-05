@@ -35,6 +35,10 @@ const userSchema = new mongoose.Schema({
 		type: Array,
 		index: true,
 	},
+	following:{
+		type: Array,
+		index: true,
+	},
 	liked:{
 		index: true,
 		type: Array
