@@ -45,7 +45,7 @@ Database
 ### DLC Diagram
 ![DLC - Instagraff](https://github.com/Mokerstier/real-time-web-1920/blob/b247101cb3a9a2dccb0ff761afe5fe6046aefb58/repo-img/DLC-instagraff.png)
 
-### Real time events
+### Socket events
 
 #### Posting an image
 Client-side user submits a form to upload an image
@@ -53,13 +53,9 @@ Client-side user submits a form to upload an image
 ```
 upload.addEventListener("submit", function (e) {
     e.preventDefault();
-    
-    const img = await sendFiles()
      
     socket.emit("image upload", geoTag, artist, style, img);
 
-    upload.reset();
-    return false
 })
 ```
 
@@ -71,7 +67,7 @@ socket.on('image upload', function(geoTag, artist, style, img){
 	})
 ```
 #### Updating map
-Server initializes the event
+Server initializes the event after the user uploaded an image
 ```
 io.emit('update map', geoTag, artist, style, img)
 ```
@@ -79,42 +75,23 @@ io.emit('update map', geoTag, artist, style, img)
 Client-side
 ```
 socket.on("update map", function (geoTag, artist, style, ref) {
-    console.log("adding graffiti to map on location " + geoTag);
-    var geojson = {
-      type: "FeatureCollection",
-      features: [
-        {
-          type: "Feature",
-          geometry: {
-            type: "Point",
-            coordinates: geoTag,
-          },
-          properties: {
-            title: artist,
-            description: style,
-            ref: ref
-          },
-        },
-      ],
-    };
-    geojson.features.forEach(function (marker) {
-      var el = document.createElement("div")
-      el.className = "marker"
-
-      new mapboxgl.Marker(el)
-      .setLngLat(marker.geometry.coordinates)
-      .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-      .setHTML(`<img src="${marker.properties.ref}" alt"${marker.properties.description} by ${marker.properties.title} ">
-                <h3>${marker.properties.title}</h3>
-                <p> ${marker.properties.description}</p>
-                `))
-      .addTo(map)
-    });
+    !! logic to make markers on the map !!
   });
+```
+#### Update list
+Server initializes the event after the user uploaded an image
+```
+io.emit("update list", geoTag, artist, style, url, photoID)
+```
+#### Update feed
+```
+io.emit("update feed", geoTag, artist, style, url, photoID)
 ```
 
 ### API's
 
 #### Flickr
+The app uses Flickr for hosting the images.
 
 #### mapBox
+The app uses mapbox to create a map.

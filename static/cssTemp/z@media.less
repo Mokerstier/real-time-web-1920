@@ -1,0 +1,38 @@
+@media only screen and (max-width: 975px) {
+  :root {
+    --container-width: 34rem;
+  }
+}
+@media only screen and (max-width: 34rem) {
+  :root {
+    --container-width: 100vw;
+  }
+  header{
+      nav{
+          background-size: 100px 50px;
+      }
+      a{
+          width: 33%;
+      }
+      img{
+          width: 100%;
+          object-fit: contain;
+      }
+  }
+}
+@media only screen and (max-width: 390px) {
+    header{
+        nav{
+            background-image: none;
+        }
+        a{
+            img{
+                display: none;
+            }
+        
+        }
+    }
+    main{
+        margin-top: 0;
+    }
+}
