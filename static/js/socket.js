@@ -233,7 +233,7 @@ function createElement(tag, { options, children }) {
       });
       const link = createElement("a", {
         options:{
-          text: '#unfollow artist',
+          text: '#unfollow',
           href: `/unfollow/${element.artist}`
         },
         children:[title, desc, cover]
@@ -246,11 +246,20 @@ function createElement(tag, { options, children }) {
       });
       feed.appendChild(card)
     });
-
-    
-
   })
-
+  // Update following
+  document.addEventListener('click', function(e){
+    if (hasClass(e.target, "follow")) {
+      e.preventDefault()
+      console.log(e.target.dataset.label);
+      const artistName = e.target.dataset.label
+      socket.emit('follow artist', artistName)
+    }
+  })
+  socket.on('update follow', function(graffs){
+    console.log(graffs)
+    updateFeed(graffs)
+  })
   // Update Ranks
   socket.on("update king", function (photoID, value) {
     console.log("updating");
@@ -284,3 +293,42 @@ function createElement(tag, { options, children }) {
     message.innerText = feedBackMsg[msg];
   });
 })();
+
+
+function updateFeed(list){
+  list.forEach(element => {
+    const title = createElement("h3", {
+      options: {
+        text: element.artist,
+        classNames: ["feed_image"],
+      },
+    });
+    const desc = createElement('p',{
+      options:{
+        text: element.style,
+        classNames:['feed_style']
+      }
+    })
+    const cover = createElement("img", {
+      options: {
+        src: element.ref,
+        classNames: ["feed_image"],
+      },
+    });
+    const link = createElement("a", {
+      options:{
+        text: '#unfollow',
+        href: `/unfollow/${element.artist}`
+      },
+      children:[title, desc, cover]
+    })
+    const card = createElement("article", {
+      options: {
+        classNames: ["card_body"],
+      },
+      children: [link ],
+    });
+    feed.appendChild(card)
+  })
+
+}

@@ -51,7 +51,7 @@ map.on("load", async () => {
             .setHTML(`<img src="${graff.ref}" alt="">
                 <h3>${graff.title}</h3>
                 <p> ${graff.description}</p>
-                <a href="/follow/${graff.title}">#follow artist</a>
+                <a class="follow" data-label="${graff.title}" href="${graff.title}">#follow artist</a>
                 <button aria-label="${graff.id}" class="king">King</button>
                 <span class="king-value">${graff.king}</span>
                 <button aria-label="${graff.id}" class="toy">Toy</button>
@@ -89,11 +89,13 @@ function buildLocationList(data) {
     const textContainer = listing.appendChild(document.createElement('div'))
     const link = textContainer.appendChild(document.createElement("a"));
     const follow = textContainer.appendChild(document.createElement("a"))
-
-    follow.href = `/follow/${prop.title}`
-    follow.innerText = '#follow artist'
+    follow.className = 'follow'
+    follow.href = `#`
+    follow.setAttribute('data-label' , prop.title)
+    follow.innerText = '#follow'
     textContainer.className = 'text_container'
-
+    
+    
     link.href = "#";
     link.classList.add("title", "link");
     link.id = "link-" + prop.id;
@@ -144,6 +146,7 @@ function createPopUp(currentFeature) {
     .setHTML(`<img src="${graff.ref}" alt="">
                 <h3>${graff.title}</h3>
                 <p> ${graff.description}</p>
+                <a class="follow" data-label="${graff.title}" href="#">#follow artist</a>
                 <button aria-label="${graff.id}" class="king">King</button>
                 <span class="king-value">${graff.king}</span>
                 <button aria-label="${graff.id}" class="toy">Toy</button>

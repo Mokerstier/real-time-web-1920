@@ -8,5 +8,11 @@ function getGraffs(req, res, next){
         next(null, results)
     })
 }
-
-module.exports = { getGraffs }
+async function getGraffsByArtist(artist){
+    graffitiSchema.find({artist}, (err, results) =>{
+        if (err) throw console.error(err);
+        console.log(results)
+        return results
+    })
+}
+module.exports = { getGraffs, getGraffsByArtist }

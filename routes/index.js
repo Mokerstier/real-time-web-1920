@@ -11,7 +11,7 @@ function routes(){
 	} = require("../controllers/upload")
 	const renderData = require('../controllers/render/renderdata')
 	const graffitis = require('../controllers/graffitis')
-	const follow = require('../controllers/follow')
+	const follow = require('../controllers/artist')
     const exRoutes = require("express").Router();
 	const bodyParser = require("body-parser");
 	const urlencodedParser = bodyParser.urlencoded({ extended: true });
@@ -35,7 +35,7 @@ function routes(){
 		.get('/livedata', graffitis.getGraffs, renderData.onRenderData ,(req, res) => {
 			res.send({results})
 		})
-		.get('/follow/:artist', isLoggedIn, follow.artist)
+		// .get('/follow/:artist', isLoggedIn, follow.artist)
 
         // POST routes
         .post("/login", onLoginPost)

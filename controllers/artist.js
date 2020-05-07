@@ -1,17 +1,16 @@
 const { userSchema } = require("../models/user");
 
-async function artist(req, res){
-    const userID = req.user
+function follow(artist, userID){
+
     userSchema.findById({_id: userID}, (err, user) =>{
         if (err) throw console.error(err);
         
         console.log(user.following) 
-        user.following.push(req.params.artist)
+        user.following.push(artist)
         console.log(user.following)
         
         user.save()
-        res.send({message: `${req.params.artist} added to your feed!`})
         
     })
 }
-module.exports = { artist }
+module.exports = { follow }

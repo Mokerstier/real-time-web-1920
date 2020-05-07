@@ -39,7 +39,7 @@ Database
 - [X] Use sockets to show live data changes on Map
 
 #### Bonus
-- [ ] Like pictures
+- [X] Like pictures
 - [ ] Comment on pictures
 
 ### DLC Diagram
@@ -87,11 +87,35 @@ io.emit("update list", geoTag, artist, style, url, photoID)
 ```
 io.emit("update feed", geoTag, artist, style, url, photoID)
 ```
+### Database
+All meta-data is stored in a database, there are different models:
+- Graffiti's are stored with the following meta-data:
+    - Artist
+    - Date
+    - GPS: {lat, long}
+    - uploader
+    - url (flickr)
+    - style (tag, piece, throw-up)
+    - Ranking (king, toy)
+- Users are stored with the following meta-data:
+    - email
+    - password (hashed)
+    - firstname
+    - lastname
+    - img (uploaded)
+    - following (used to personalize feed)
+    - liked (king)
+    - disliked (toy)
 
 ### API's
 
 #### Flickr
 The app uses Flickr for hosting the images.
+When a user uploads an image its sent to the server where it's `Exif` meta-data (if available) is scraped after that its uploaded from the server to Flickr using the API where the images are hosted.
 
 #### mapBox
 The app uses mapbox to create a map.
+The database is checked for all graffiti meta-data which is send to the client where the mapBox.js parses the data to create markers on the map wich are visable for all users. 
+
+### Privacy
+The users can't see who uploaded the image because only the user-ID is sent to the browser and the user data is never send to the browser.

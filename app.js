@@ -12,6 +12,7 @@ const passport = require("passport");
 const { userSchema } = require("./models/user");
 const { graffitiSchema } = require("./models/graffiti");
 const vote = require("./controllers/vote");
+const artist = require('./controllers/artist')
 const getter = require("./controllers/graffitis");
 // const {onUpload} = require('./controllers/upload')
 
@@ -135,7 +136,19 @@ io.on("connection", async function (socket) {
     io.emit("update list", geoTag, artist, style, url, photoID);
     io.emit("update feed", geoTag, artist, style, url, photoID);
   });
-
+  // Follow artist
+  socket.on('follow artist', async function(artistName){
+    if (userID === undefined) {
+      socket.emit("feedback message", 0);
+    } else {
+      artist.follow(artistName, userID);
+      graffitiSchema.find({ artist: artistName }, (err, results) => {
+        if (err) throw console.error(err);
+        console.log(results)
+        socket.emit("update follow", results);
+      });
+    }
+  })
   // Rank photo's
   socket.on("vote king", async function (photoID) {
     // write data to DB
