@@ -21,11 +21,12 @@ var map = new mapboxgl.Map({
   zoom: 8.7,
   maxBounds: bounds,
 });
-
+if(dropMarker){
 dropMarker.addEventListener("click", function (e) {
   e.preventDefault();
   createMarker();
 });
+}
 const url = "/livedata";
 map.on("load", async () => {
   

@@ -53,6 +53,7 @@ function createElement(tag, { options, children }) {
 (function () {
   const socket = io();
   // getLocation()
+  if(upload){
   upload.addEventListener("submit", async function (e) {
     e.preventDefault();
     let button = upload.getElementsByTagName("button")[0];
@@ -89,7 +90,7 @@ function createElement(tag, { options, children }) {
         return false;
       });
   });
-
+}
   //Update Map
   socket.on("update map", function (geoTag, artist, style, photoURL, id) {
     var geojson = {
@@ -152,7 +153,7 @@ function createElement(tag, { options, children }) {
     const title = createElement("h3", {
       options: {
         text: artist,
-        classNames: ["feed_image"],
+        classNames: ["feed_artist"],
       },
     });
     const desc = createElement('p',{
@@ -296,7 +297,7 @@ function updateFeed(list){
     const title = createElement("h3", {
       options: {
         text: element.artist,
-        classNames: ["feed_image"],
+        classNames: ["feed_artist"],
       },
     });
     const desc = createElement('p',{

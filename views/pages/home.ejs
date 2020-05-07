@@ -5,8 +5,13 @@
   <h3><%= message %></h3>
   <%- include('../partials/map.ejs') %> 
   
-  <%- include('../partials/upload-graffs.ejs') %>
+  <% if (user){  %>
+    
+  <% } %>
   
+  
+  
+  <%- include('../partials/upload-graffs.ejs') %>
   <%- include('../partials/footer.ejs') %>
   <%- include('../partials/message.ejs') %>
 </html>

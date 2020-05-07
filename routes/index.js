@@ -23,7 +23,7 @@ function routes(){
         
         .get("/login", onLoginGet)
         .get("/register", onRegister)
-        .get("/", graffitis.getGraffs, (req, res) => {
+        .get("/", graffitis.getGraffs,  (req, res) => {
 			console.log(req.user)
 			res.render("pages/home.ejs", {
 				title: "Instagraff",
