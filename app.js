@@ -131,7 +131,6 @@ io.on("connection", async function (socket) {
   console.log(`⚡︎ user connected as ${userID} ⚡︎`);
 
   socket.on("image upload", function (geoTag, artist, style, url, photoID) {
-    console.log("update map with url: "+url);
     io.emit("update map", geoTag, artist, style, url, photoID);
     io.emit("update list", geoTag, artist, style, url, photoID);
     io.emit("update feed", geoTag, artist, style, url, photoID);
@@ -141,13 +140,21 @@ io.on("connection", async function (socket) {
     if (userID === undefined) {
       socket.emit("feedback message", 0);
     } else {
-      artist.follow(artistName, userID);
-      graffitiSchema.find({ artist: artistName }, (err, results) => {
-        if (err) throw console.error(err);
-        console.log(results)
-        socket.emit("update follow", results);
-      });
+      if (!following.includes(artistName)){
+        artist.follow(artistName, userID);
+        graffitiSchema.find({ artist: artistName }, (err, results) => {
+          if (err) throw console.error(err);
+          console.log(results)
+          socket.emit("update follow", results);
+        });
+      } else {
+        socket.emit('feedback message', 1)
+      }
     }
+  })
+  socket.on('unfollow artist', function(artistName){
+    artist.unFollow(artistName, userID);
+    socket.emit('remove feed', artistName)
   })
   // Rank photo's
   socket.on("vote king", async function (photoID) {

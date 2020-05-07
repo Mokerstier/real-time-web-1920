@@ -6,15 +6,22 @@ Track graffiti's as they are posted by other users and show them on a map based 
 The app is connected through an Oauth flow with the Flickr API
 
 ### Tech setup
-Server
-- Node.js
+Server NPM dependencies
+- Bcrypt
+- Body-parser
+- Chokidar-cli
+- Cookie-parser
+- coordinates-converter
+- ejs
+- Exif
 - Express
 - Express-session
-- Cookie-parser
-- Body-parser
+- flickrapi
+- mapbox-gl
+- Node.js
 - Socket.io
 
-Development environment
+Development dependencies
 - Nodemon
 - Dotenv
 
@@ -35,7 +42,7 @@ Database
 
 #### Core server functionality
 - [X] Saving meta-data of images to the database per user
-- [ ] Use sockets to show live data changes on Feed
+- [X] Use sockets to show live data changes on Feed
 - [X] Use sockets to show live data changes on Map
 
 #### Bonus

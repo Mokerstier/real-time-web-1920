@@ -51,7 +51,7 @@ map.on("load", async () => {
             .setHTML(`<img src="${graff.ref}" alt="">
                 <h3>${graff.title}</h3>
                 <p> ${graff.description}</p>
-                <a class="follow" data-label="${graff.title}" href="${graff.title}">#follow artist</a>
+                <a class="follow" data-label="${graff.title}" href="${graff.title}">#follow</a>
                 <button aria-label="${graff.id}" class="king">King</button>
                 <span class="king-value">${graff.king}</span>
                 <button aria-label="${graff.id}" class="toy">Toy</button>
@@ -146,7 +146,7 @@ function createPopUp(currentFeature) {
     .setHTML(`<img src="${graff.ref}" alt="">
                 <h3>${graff.title}</h3>
                 <p> ${graff.description}</p>
-                <a class="follow" data-label="${graff.title}" href="#">#follow artist</a>
+                <a class="follow" data-label="${graff.title}" href="#">#follow</a>
                 <button aria-label="${graff.id}" class="king">King</button>
                 <span class="king-value">${graff.king}</span>
                 <button aria-label="${graff.id}" class="toy">Toy</button>
