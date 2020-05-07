@@ -81,7 +81,11 @@ function buildLocationList(data) {
 
     /* Add the link to the individual listing created above. */
     
-    const thumbNail = document.createElement('img')
+    const thumbNail = listing.appendChild(document.createElement('img'))
+    thumbNail.src = prop.ref
+    thumbNail.alt = `${prop.description} by artist: ${prop.title}`
+    thumbNail.className = 'thumbList'
+
     const textContainer = listing.appendChild(document.createElement('div'))
     const link = textContainer.appendChild(document.createElement("a"));
     const follow = textContainer.appendChild(document.createElement("a"))
@@ -89,9 +93,7 @@ function buildLocationList(data) {
     follow.href = `/follow/${prop.title}`
     follow.innerText = '#follow artist'
     textContainer.className = 'text_container'
-    thumbNail.src = prop.ref
-    thumbNail.alt = `${prop.description} by artist: ${prop.title}`
-    thumbNail.className = 'thumbList'
+
     link.href = "#";
     link.classList.add("title", "link");
     link.id = "link-" + prop.id;
