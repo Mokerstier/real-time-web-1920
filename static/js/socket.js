@@ -212,40 +212,8 @@ function createElement(tag, { options, children }) {
   socket.on('my following', function(list){
     const personal = document.querySelector('.personal-feed')
     personal.remove()
-    list.forEach(element => {
-      const title = createElement("h3", {
-        options: {
-          text: element.artist,
-          classNames: ["feed_image"],
-        },
-      });
-      const desc = createElement('p',{
-        options:{
-          text: element.style,
-          classNames:['feed_style']
-        }
-      })
-      const cover = createElement("img", {
-        options: {
-          src: element.ref,
-          classNames: ["feed_image"],
-        },
-      });
-      const link = createElement("a", {
-        options:{
-          text: '#unfollow',
-          href: `/unfollow/${element.artist}`
-        },
-        children:[title, desc, cover]
-      })
-      const card = createElement("article", {
-        options: {
-          classNames: ["card_body"],
-        },
-        children: [link ],
-      });
-      feed.appendChild(card)
-    });
+    updateFeed(list)
+    
   })
   // Update following
   document.addEventListener('click', function(e){
