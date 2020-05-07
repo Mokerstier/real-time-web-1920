@@ -120,6 +120,8 @@ All meta-data is stored in a database, there are different models:
 The app uses Flickr for hosting the images.
 When a user uploads an image its sent to the server where it's `Exif` meta-data (if available) is scraped after that its uploaded from the server to Flickr using the API where the images are hosted.
 
+The app is connected with an Flickr account through a Oauth connection.
+
 #### mapBox
 The app uses mapbox to create a map.
 The database is checked for all graffiti meta-data which is send to the client where the mapBox.js parses the data to create markers on the map wich are visable for all users. 
