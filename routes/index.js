@@ -32,6 +32,7 @@ function routes(){
 				user: req.user,
 			});
 		})
+		.get("/logout", onLogout)
 		.get('/livedata', graffitis.getGraffs, renderData.onRenderData ,(req, res) => {
 			res.send({results})
 		})

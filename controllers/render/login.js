@@ -1,8 +1,10 @@
 const passport = require("passport");
 
 function onLoginGet(req, res) {
+	const user = (req.user)
 	res.render("pages/login.ejs", {
-		title: "Login"
+		title: "Login",
+		user: user
 	});
 }
 function onLoginPost(req, res, next) {

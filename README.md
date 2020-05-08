@@ -49,6 +49,14 @@ Database
 - [X] Like pictures
 - [ ] Comment on pictures
 
+#### Wishlist
+- Suggesties doen van graffiti's in de buurt op basis van de locatie van de gebruiker
+- Een top 3 lijst maken met foto's met de meeste stemmen
+- Service worker integreren zodat de applicatie als web-app gebruikt kan worden.
+- Micro-interacties toevoegen
+- Profiel pagina toevoegen (om gelikte en geposte foto's te beheren)
+
+
 ### DLC Diagram
 ![DLC - Instagraff](https://github.com/Mokerstier/real-time-web-1920/blob/b247101cb3a9a2dccb0ff761afe5fe6046aefb58/repo-img/DLC-instagraff.png)
 
