@@ -16,8 +16,10 @@ function onLoginPost(req, res, next) {
 }
 
 function onRegister(req, res) {
+	const user = (req.user)
 	res.render("pages/register.ejs", {
-		title: "Register"
+		title: "Register",
+		user: user
 	});
 }
 
