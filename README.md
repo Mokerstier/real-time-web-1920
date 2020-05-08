@@ -55,6 +55,7 @@ Database
 - Service worker integreren zodat de applicatie als web-app gebruikt kan worden.
 - Micro-interacties toevoegen
 - Profiel pagina toevoegen (om gelikte en geposte foto's te beheren)
+- Build scripts toevoegen voor JS
 
 
 ### DLC Diagram

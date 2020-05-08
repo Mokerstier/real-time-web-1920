@@ -19,10 +19,6 @@
   }
 }
 @media only screen and (max-width: 390px) {
-  body{
-    max-height: 100vh;
-    overflow: hidden;
-  }
   header nav {
     background-image: none;
   }
@@ -31,5 +27,25 @@
   }
   main {
     margin-top: 0;
+  }
+}
+@media only screen and (min-width: 850px) {
+  header nav {
+    margin-left: auto;
+    margin-right: 0;
+    width: 66.666%;
+    justify-content: space-between;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .map_container {
+    width: 66.666%;
+    right: 0;
+    left: 33%;
+    margin: 0;
+  }
+  .list_container {
+    width: 33.333%;
+    top: 0;
   }
 }
