@@ -17,14 +17,7 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	firstName: {
-		type: String,
-		lowercase: true,
-		required: [true, "can't be blank"],
-		index: true,
-		required: true
-	},
-	lastName: {
+	nickName: {
 		type: String,
 		lowercase: true,
 		required: [true, "can't be blank"],

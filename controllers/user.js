@@ -12,8 +12,7 @@ router.post("/", urlencodedParser, async (req, res) => {
 	} else {
 		// Insert the new user if they do not exist yet
 		user = new userSchema({
-			firstName: req.body.firstName,
-			lastName: req.body.lastName,
+			nickName: req.body.nickName,
 			email: req.body.email,
 			password: req.body.password,
 			

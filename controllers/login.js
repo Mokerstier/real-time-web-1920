@@ -32,7 +32,7 @@ module.exports = function(passport) {
 					bcrypt.compare(password, user.password, (err, authSucces) => {
 						if (err) throw err;
 						if (authSucces) {
-							console.log(`${user.firstName} is now logged in`);
+							console.log(`${user.nickName} is now logged in`);
 							var user_id = user.id;
 							return done(null, user.id);
 						}
