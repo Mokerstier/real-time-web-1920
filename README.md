@@ -103,6 +103,21 @@ io.emit("update list", geoTag, artist, style, url, photoID)
 ```
 io.emit("update feed", geoTag, artist, style, url, photoID)
 ```
+#### Follow artist (unfollow works basicly the same)
+Client side click follow
+```
+socket.emit('follow artist', artistName)
+```
+Serverside
+```
+socket.join(`${artistName}`)
+```
+Socket will join artist ROOM to get live updates
+```
+socket.emit("update follow", results)
+```
+Socket's feed will be updated
+
 ### Database
 All meta-data is stored in a database, there are different models:
 - Graffiti's are stored with the following meta-data:
