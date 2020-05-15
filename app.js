@@ -102,7 +102,7 @@ io.use((socket, next) => {
 io.on("connection", async function (socket) {
   let userID = "";
   const liked = [];
-  const following = [];
+  // const following = [];
   if (socket.handshake) {
     console.log(socket.handshake.session);
     userID =
@@ -113,17 +113,22 @@ io.on("connection", async function (socket) {
     userSchema.findById(userID, (err, results) => {
       if (err) throw console.error(err);
       liked.push(results.liked);
-      following.push(results.following);
-      console.log(liked);
-
-      following.forEach((element) => {
-        console.log(element);
+      
+      // console.log(liked);
+      console.log(results.following)
+      socket.following = results.following;
+      socket.following.forEach((element) => {
+        
         graffitiSchema.find({ artist: element }, (err, results) => {
           if (err) throw console.error(err);
           socket.emit("my following", results);
-
+          
         });
       });
+      socket.following.forEach(element =>{
+        socket.join(`${element}`)
+      })
+      console.log(socket.rooms)
       socket.emit("my likes", liked);
     });
   }
@@ -131,9 +136,11 @@ io.on("connection", async function (socket) {
   console.log(`⚡︎ user connected as ${userID} ⚡︎`);
 
   socket.on("image upload", function (geoTag, artist, style, url, photoID) {
+    io.to(`${artist}`).emit("update feed", geoTag, artist, style, url, photoID);
+    io.to(`${artist}`).emit("artist update", artist, style)
     io.emit("update map", geoTag, artist, style, url, photoID);
     io.emit("update list", geoTag, artist, style, url, photoID);
-    io.emit("update feed", geoTag, artist, style, url, photoID);
+    
   });
   // Follow artist
   socket.on('follow artist', async function(artistName){
@@ -142,6 +149,7 @@ io.on("connection", async function (socket) {
     } else {
       if (!following.includes(artistName)){
         artist.follow(artistName, userID);
+        socket.following.push(artistName)
         graffitiSchema.find({ artist: artistName }, (err, results) => {
           if (err) throw console.error(err);
           console.log(results)
@@ -154,6 +162,7 @@ io.on("connection", async function (socket) {
   })
   socket.on('unfollow artist', function(artistName){
     artist.unFollow(artistName, userID);
+    removeAllElements(socket.following, artistName)
     socket.emit('remove feed', artistName)
   })
   // Rank photo's

@@ -146,6 +146,19 @@ function createElement(tag, { options, children }) {
     img.src = photoURL;
     img.className = "img-thumb";
   });
+  // Artist update
+  socket.on("artist update", function (artist, style) {
+    const artistMSG = document.createElement('div')
+    const artistNAME = document.createElement('h3')
+    const artistTAG = document.createElement('p')
+
+    artistMSG.className = 'artistPopUp'
+    artistTAG.innerText = style
+    artistNAME.innerText = artist
+    artistMSG.appendChild(artistNAME)
+    artistMSG.appendChild(artistTAG)
+    document.querySelector('body').appendChild(artistMSG)
+  })
 
   //Update Feed
   socket.on("update feed", function (geoTag, artist, style, photoURL, photoID) {
@@ -171,7 +184,7 @@ function createElement(tag, { options, children }) {
     const link = createElement("a", {
       options:{
         href: `/follow/${artist}`,
-        text: '#follow artist',
+        text: '#unfollow',
         classNames: ['unfollow']
       },
       children:[]
@@ -205,8 +218,8 @@ function createElement(tag, { options, children }) {
   })
   // my following
   socket.on('my following', function(list){
-    const personal = document.querySelector('.personal-feed')
-    personal.remove()
+    // const personal = document.querySelector('.personal-feed')
+    // personal.remove()
     updateFeed(list)
     
   })

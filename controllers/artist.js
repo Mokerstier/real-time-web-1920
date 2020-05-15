@@ -30,4 +30,4 @@ function removeAllElements(array, elem) {
         index = array.indexOf(elem);
     }
 }
-module.exports = { follow, unFollow }
+module.exports = { follow, unFollow, removeAllElements }
