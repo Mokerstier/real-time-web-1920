@@ -1,28 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head.ejs') %>
 
-<%- include('../partials/head.ejs') %>
-<div class="background_img"></div>
-<main class="form_login">
-    <form
-      method="POST"
-      id="newUser"
-      action="/register"
-    >
-      <h1>Register</h1>
+  <div class="background_img"></div>
+  <main class="form_login">
+    <form method="POST" id="newUser" action="/register">
       <fieldset>
-        <label for="firstName">Voornaam</label>
-        <input type="text" name="firstName" class="" required />
-
-        <label for="lastName" class="label field2">Achternaam</label>
-        <input type="text" name="lastName" class="" required />
-
-        <label for="email" class="label field3">E-mailadres</label>
-        <input type="email" name="email" id="email" required />
-
-        <label for="password" class="label field4">Wachtwoord</label>
-        <input type="password" name="password" class="field field4" required />
+        <legend>Register</legend>
+        <div class="form_field">
+          <label for="nickName">Nickname</label>
+          <input type="text" name="nickName" class="" required />
+        </div>
+        <div class="form_field">
+          <label for="email" class="label field3">E-mailadres</label>
+          <input type="email" name="email" id="email" required />
+        </div>
+        <div class="form_field">
+          <label for="password" class="label field4">Password</label>
+          <input
+            type="password"
+            name="password"
+            class="field field4"
+            required
+          />
+        </div>
       </fieldset>
-      <button class="form__button" type="submit">Registreer</button>
-      <p>Already got an account? <a href="/login"> login</a></p>
+      <button class="form_button" type="submit">Register</button>
+      <div class="form_field">
+        <p>Already got an account? <a href="/login"> login</a></p>
+      </div>
     </form>
   </main>
-    <%- include('../partials/footer.ejs') %>
+  <%- include('../partials/footer.ejs') %>
+</html>
