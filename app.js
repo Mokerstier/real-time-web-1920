@@ -150,6 +150,7 @@ io.on("connection", async function (socket) {
       if (!following.includes(artistName)){
         artist.follow(artistName, userID);
         socket.following.push(artistName)
+        socket.join(`${artistName}`)
         graffitiSchema.find({ artist: artistName }, (err, results) => {
           if (err) throw console.error(err);
           console.log(results)
@@ -162,6 +163,7 @@ io.on("connection", async function (socket) {
   })
   socket.on('unfollow artist', function(artistName){
     artist.unFollow(artistName, userID);
+    socket.leave(`${artistName}`)
     removeAllElements(socket.following, artistName)
     socket.emit('remove feed', artistName)
   })
