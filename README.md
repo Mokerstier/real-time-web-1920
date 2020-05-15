@@ -59,7 +59,7 @@ Database
 
 
 ### DLC Diagram
-![DLC - Instagraff](https://github.com/Mokerstier/real-time-web-1920/blob/b247101cb3a9a2dccb0ff761afe5fe6046aefb58/repo-img/DLC-instagraff.png)
+![DLC - Instagraff](https://github.com/Mokerstier/real-time-web-1920/blob/master/repo-img/DLC-instagraff.V1.1.png?raw=true)
 
 ### Socket events
 
