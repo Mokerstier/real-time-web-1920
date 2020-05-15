@@ -1,0 +1,187 @@
+form{
+    background-color: rgba(105, 105, 105, 0.65);
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    border-radius: 4px;
+    margin: auto;
+    width: var(--container-width);
+}
+.container.x {
+  display: flex;
+  overflow: auto;
+  flex: none;
+  width: 100%;
+  height: 12rem;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+.x.proximity-scroll-snapping {
+  scroll-snap-type: x proximity;
+}
+.container > fieldset {
+  text-align: left;
+  scroll-snap-align: center;
+  flex: none;
+  border-right: 1px solid var(--grey-light);
+}
+
+.x.container > fieldset {
+
+  width: 100%;
+  height:auto;
+}
+.form_upload{
+
+  #show-form{
+    position: absolute;
+    left: -999px;
+  }
+  
+  display: flex;
+  flex-wrap: wrap;
+}
+.form_upload > label{
+  background-color: var(--grey-dark);
+  background-image: url('/ui/buttons/camera-white-fat.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 2rem;
+  display: block;
+  position: absolute;
+  bottom: 3rem;
+  right: 1.5rem;
+  width: 3rem;
+  height: 3rem; 
+  border: 1px solid #fff;
+  border-radius: 50%;
+  transition: transform ease 1.4s;
+  z-index: 3;
+  &:hover, &:active{
+    transform: scale(1.5);
+    background-color: var(--grey-light);
+  }
+}
+#upload{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-flow: column nowrap;
+  background-color: var(--grey-dark);
+  color: #fff;
+  position: absolute;
+  border-radius: 50%;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  transition: all 1.4s ease-in-out;
+  overflow-x: scroll;
+  .container.x{
+    height: 100%;
+  }
+  .login-message{
+    text-align: center;
+    margin: auto;
+    margin-top: 5rem;
+    padding:.5rem;
+  }
+  .login-sub{
+    margin-bottom: 3rem;
+  }
+  #artist{
+    width: 100%;
+    height: auto;
+  }
+  a{
+    color: #fff;
+  }
+  a:visited{
+    color: #fff;
+  }
+  button{
+    padding: 1.5rem;
+    font-size: 1.5rem;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    background-color: var(--grey-dark);
+    &:hover{
+      background-color: var(--grey-light);
+    }
+  }
+  fieldset{
+    transition: all 1.4s ease-in-out;
+    width: 100%;
+    max-width: 16rem;
+    height: 100%;
+    scroll-snap-type: x proximity;
+    &:valid{
+      background-color: var(--grey-light);
+    }
+  }
+}
+#show-form:checked ~ label{
+  z-index: 3;
+  transform: translateY(-8rem);
+  background-image: url('/ui/buttons/back-button.svg');
+}
+#show-form:checked ~ #upload{
+ opacity: 1;
+ width: 100%;
+ height: 16rem;
+ z-index: 2;
+ border-radius: 4px;
+}
+.form_login {
+  legend{
+    font-size: 2rem;
+    font-weight: bold;
+    margin: auto;
+}
+  label{
+      margin: auto;
+  }
+  input {
+    display: block;
+    margin: auto;
+  }
+}
+fieldset {
+  border: none;
+  display: flex;
+}
+fieldset:last-of-type{
+  width: 100%;
+
+}
+.form_field {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+.form_button{
+    margin: 1rem auto;
+}
+#fileList{
+  ul{
+    list-style: none;
+    padding: 0;
+    .obj{
+      width: 100%;
+      max-width: 12rem;
+      object-fit: contain;
+    }
+    li{
+      justify-content: space-around;
+      display: flex;
+      flex-direction: column;
+    }
+    span{
+      display: block;
+    }
+    
+  }
+  
+}
